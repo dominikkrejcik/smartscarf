@@ -7,8 +7,8 @@ class ConnectionPool
     @_connections.push(conn)
 
   removeConnection: (conn) ->
-    #@_connections.splice(@_connections.indexOf(conn), 1)
-    #conn.removeAllListeners()
+    @_connections.splice(@_connections.indexOf(conn), 1)
+    conn.removeAllListeners()
 
   _pipeConnections: (connA, connB) ->
     connA.pipe(connB)
