@@ -10,14 +10,33 @@ public class User : MonoBehaviour {
 	private bool connected = false;
 	private AudioListener userAudioListener;
 	private List<GameObject> sourceList = new List<GameObject>();
+	private float[] samples;
 
 	// Use thisous for initialization
 	void Start () {
 		userAudioListener = GetComponent<AudioListener>();
+
+		//micStart();
+
+		bool yey = false;
+
+		float[] samples = new float[audio.clip.samples * audio.clip.channels];
+		audio.clip.GetData(samples, 0);
+
+		for (int i = 0; i < samples.Length; ++i)
+		{
+			if (samples[i] != 0f)
+			{
+				yey = true;
+			}
+		}
+		byte[] ba = new byte[samples.Length * 4];
+
+		print (yey);
 	}
-
+	
 	void OnGUI() {
-
+		
 		if (!connected)
 		{
 			if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Enter room"))
@@ -35,12 +54,20 @@ public class User : MonoBehaviour {
 			}
 		}
 	}
+
+	void micStart()
+	{
+		string selectedDevice = "Built-in Microphone";
+
+		audio.clip = Microphone.Start(selectedDevice, true, 10, 44100);
+		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
+		audio.Play(); // Play the audio source!
+	}
 	
 	void connect()
 	{
 		//establish a connection to the server
-		
-		addSoundSource(sound);
+	
 		addSoundSource(sound);
 		addSoundSource(sound);
 		addSoundSource(sound);
@@ -66,7 +93,7 @@ public class User : MonoBehaviour {
 
 	void addSoundSource(AudioClip sound)
 	{
-		Vector3 posistionVector = getNeePosistionVecotr();
+		Vector3 posistionVector = getNewPosistionVecotr();
 
 		GameObject source = Instantiate(soundSource, posistionVector, Quaternion.identity) as GameObject;
 
@@ -76,14 +103,13 @@ public class User : MonoBehaviour {
 		sourceComponent.PlayOneShot(sound);
 	}
 
-	Vector3 getNeePosistionVecotr()
+	Vector3 getNewPosistionVecotr()
 	{
 		//place sources around user
-
-		return (Quaternion.Euler(0, 0, ((360f)/(sourceList.Count+1)	)) * Vector3.up);
+		
+		return (Quaternion.Euler(0, 0, ((360f)/(sourceList.Count+1)	)) * Vector3.right * 4);
 
 	}
-
 	
 	void removeSoundSources()
 	{
