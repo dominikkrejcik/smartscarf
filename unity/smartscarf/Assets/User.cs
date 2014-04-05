@@ -179,7 +179,6 @@ public class User : MonoBehaviour {
 
 		//print(byteData.Length);
 		float[] audioData = ToFloatArray(byteData);
-
 		audio.clip.SetData(audioData, 0);
 	}
 }
