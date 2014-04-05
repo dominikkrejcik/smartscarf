@@ -8,8 +8,16 @@ public class User : MonoBehaviour {
 	private AudioListener userAudioListener;
 	private List<GameObject> sourceList = new List<GameObject>();
 	private byte[] sampleBytes;
+<<<<<<< HEAD
 	// Use thisous for initialization
 	void Start () {
+=======
+
+
+	// Use thisous for initialization
+	void Start () {
+
+>>>>>>> FETCH_HEAD
 		userAudioListener = GetComponent<AudioListener>();
 		
 		micActivate();
@@ -30,11 +38,19 @@ public class User : MonoBehaviour {
 		return byteArray;
 		
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 	public float[] ToFloatArray(byte[] byteArray)
 	{
 		
 		int len = byteArray.Length / 4;
 		float[] floatArray = new float[len];
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 		for (int i = 0; i < byteArray.Length; i+=4)
 		{
 			floatArray[i/4] = System.BitConverter.ToSingle(byteArray, i);
@@ -71,12 +87,20 @@ public class User : MonoBehaviour {
 		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
 		audio.Play(); // Play the audio source!
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 	byte[] bytesToSend()
 	{
 		float[] audioData = new float[audio.clip.samples * audio.clip.channels];
 		audio.clip.GetData(audioData, 0);
 		
 		return ToByteArray(audioData);
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 	}
 	
 	void connect()
@@ -125,12 +149,18 @@ public class User : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+<<<<<<< HEAD
 		
+=======
+	
+
+>>>>>>> FETCH_HEAD
 		/*
 	 * 
 	 * sending:
 		sampleBytes = bytesToSend();
 		//then send smaplebtess off
+<<<<<<< HEAD
 		receiving
 		//receive sample bytes
 		float[] audioData = ToFloatArray(sampleBytes);
@@ -139,5 +169,21 @@ public class User : MonoBehaviour {
 		byte[] ba = bytesToSend();
 		
 		float[] samples1 = ToFloatArray (ba);
+=======
+
+		receiving
+		//receive sample bytes
+
+		float[] audioData = ToFloatArray(sampleBytes);
+		audio.clip.SetData(audioData, 0);
+
+	*/
+
+		byte[] ba = bytesToSend();
+		
+		float[] samples1 = ToFloatArray (ba);
+
+
+>>>>>>> FETCH_HEAD
 	}
 }
