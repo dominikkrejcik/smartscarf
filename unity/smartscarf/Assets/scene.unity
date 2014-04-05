@@ -268,7 +268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundSource: {fileID: 100000, guid: 96cd8e8394a8bd3499d4ed9338bb2fe7, type: 2}
-  sound: {fileID: 8300000, guid: 4858bc1dfedb88d41ba3b48bc417d12f, type: 3}
+  sound: {fileID: 0}
 --- !u!33 &1853203036
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -295,7 +295,7 @@ AudioSource:
   m_GameObject: {fileID: 1853203032}
   m_Enabled: 1
   serializedVersion: 3
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 43a7f002de50fb8439f302f3da8261eb, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
