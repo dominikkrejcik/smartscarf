@@ -12,7 +12,7 @@ public class User : MonoBehaviour {
 	private NetworkBehaviour networkClass;
 	private List<GameObject> sourceList = new List<GameObject>();
 	private byte[] sampleBytes;
-	
+	int sada;
 	
 	// Use thisous for initialization
 	void Start () {
