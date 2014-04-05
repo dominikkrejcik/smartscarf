@@ -57,30 +57,36 @@ public class NetworkBehaviour : MonoBehaviour {
 	private void read(IAsyncResult ar)
 	{ 
 		int BytesRead;
+
 		try
 		{
-			// Finish asynchronous read into readBuffer and return number of bytes read.
+
 			BytesRead = client.GetStream().EndRead(ar);
-			if (BytesRead < 1) 
-			{
-				// if no bytes were read server has close.  
-				
-				return;
-			}
-			// Convert the byte array the message was saved into, minus two for the
-			
-			strMessage = Encoding.ASCII.GetString(readBuffer, 0, BytesRead);
-			
-			print(strMessage);//+"uud");
-			
-			// Start a new asynchronous read into readBuffer.
-			client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
-			
-		} 
+		}
 		catch
 		{
-
+			//An error has occured when reading
+			return;
 		}
+		
+		if (BytesRead == 0)
+		{
+			//The connection has been closed.
+			return;
+		}
+		
+		readBuffer = ar.AsyncState as byte[];
+		//string data = this.Encoding.GetString(buffer, 0, read);
+		//Do something with the data object here.
+		//Then start reading from the network again.
+		client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
+
+	}
+
+	public byte[] asdf ()
+	{
+		return readBuffer;
+		//client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
 	}
 	
 	
@@ -88,7 +94,7 @@ public class NetworkBehaviour : MonoBehaviour {
 	
 	public void SendData(byte[] Snoop)
 	{
-
+		
 		Write(Snoop);
 	}
 	
@@ -118,7 +124,7 @@ public class NetworkBehaviour : MonoBehaviour {
 		// Start an asynchronous read invoking DoRead to avoid lagging the user
 		// interface.
 		//client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
-		
+		client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
 	}
 	
 
