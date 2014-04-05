@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-public class User : MonoBehaviour {
+﻿	using UnityEngine;
+	using System.Collections;
+	using System.Collections.Generic;
+	public class User : MonoBehaviour {
 	public GameObject soundSource;
 	public AudioClip sound;
 	private bool connected = false;
@@ -43,7 +43,7 @@ public class User : MonoBehaviour {
 		return floatArray;
 		
 	}
-	
+
 	void OnGUI() {
 		if (!connected)
 		{
@@ -62,7 +62,7 @@ public class User : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	void micActivate()
 	{
 		string selectedDevice = "Built-in Microphone";
@@ -78,7 +78,7 @@ public class User : MonoBehaviour {
 		
 		return ToByteArray(audioData);
 	}
-	
+
 	void connect()
 	{
 		//establish a connection to the server
@@ -114,7 +114,7 @@ public class User : MonoBehaviour {
 		
 		return (Quaternion.Euler(0, 0, ((360f)/(sourceList.Count+1)	)) * Vector3.right * 4);
 	}
-	
+
 	void removeSoundSources()
 	{
 		for (int i=0; i < sourceList.Count; i++)
@@ -138,6 +138,6 @@ public class User : MonoBehaviour {
 	*/
 		byte[] ba = bytesToSend();
 		
-		float[] samples1 = ToFloatArray (ba);
+		//float[] samples1 = ToFloatArray (ba);
 	}
-}
+	}
