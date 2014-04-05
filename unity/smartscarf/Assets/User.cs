@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -16,13 +16,13 @@ public class User : MonoBehaviour {
 	
 	// Use thisous for initialization
 	void Start () {
-
+		
 		userAudioListener = GetComponent<AudioListener>();
 		networkClass = GetComponent<NetworkBehaviour>();
-
+		
 		micActivate();
 	}
-
+	
 	public byte[] ToByteArray(float[] floatArray) {
 		
 		int len = floatArray.Length * 4;
@@ -118,14 +118,9 @@ public class User : MonoBehaviour {
 		userAudioListener.enabled = false;
 		
 	}
+	
 
-	IEnumerator sendData ()
-	{
-		yield return new WaitForEndOfFrame();
-
-		networkClass.SendData(bytesToSend());
-	}
-
+	
 	void addSoundSource(AudioClip sound)
 	{
 		Vector3 posistionVector = getNewPosistionVecotr();
@@ -175,7 +170,9 @@ public class User : MonoBehaviour {
 
 	*/
 		
-		StartCoroutine("sendData");
+		networkClass.SendData(bytesToSend());
 		
 	}
 }
+
+
