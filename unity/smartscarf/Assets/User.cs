@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-﻿	using UnityEngine;
-	using System.Collections;
-	using System.Collections.Generic;
-	public class User : MonoBehaviour {
-=======
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class User : MonoBehaviour {
 	
->>>>>>> FETCH_HEAD
 	public GameObject soundSource;
 	public AudioClip sound;
 	
@@ -23,13 +16,13 @@ public class User : MonoBehaviour {
 	
 	// Use thisous for initialization
 	void Start () {
-
+		
 		userAudioListener = GetComponent<AudioListener>();
 		networkClass = GetComponent<NetworkBehaviour>();
-
+		
 		micActivate();
 	}
-
+	
 	public byte[] ToByteArray(float[] floatArray) {
 		
 		int len = floatArray.Length * 4;
@@ -61,7 +54,7 @@ public class User : MonoBehaviour {
 		return floatArray;
 		
 	}
-
+	
 	void OnGUI() {
 		if (!connected)
 		{
@@ -80,7 +73,7 @@ public class User : MonoBehaviour {
 			}
 		}
 	}
-
+	
 	void micActivate()
 	{
 		string selectedDevice = "Built-in Microphone";
@@ -98,7 +91,7 @@ public class User : MonoBehaviour {
 		return ToByteArray(audioData);
 		
 	}
-
+	
 	void connect()
 	{
 		//establish a connection to the server
@@ -125,14 +118,14 @@ public class User : MonoBehaviour {
 		userAudioListener.enabled = false;
 		
 	}
-
+	
 	IEnumerator sendData ()
 	{
 		yield return new WaitForEndOfFrame();
-
+		
 		networkClass.SendData(bytesToSend());
 	}
-
+	
 	void addSoundSource(AudioClip sound)
 	{
 		Vector3 posistionVector = getNewPosistionVecotr();
@@ -152,7 +145,7 @@ public class User : MonoBehaviour {
 		return (Quaternion.Euler(0, 0, ((360f)/(sourceList.Count+1)	)) * Vector3.right * 4);
 		
 	}
-
+	
 	void removeSoundSources()
 	{
 		
@@ -182,13 +175,9 @@ public class User : MonoBehaviour {
 
 	*/
 		
-<<<<<<< HEAD
-		//float[] samples1 = ToFloatArray (ba);
-	}
-	}
-=======
 		StartCoroutine("sendData");
 		
 	}
 }
->>>>>>> FETCH_HEAD
+
+
