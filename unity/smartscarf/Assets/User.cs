@@ -119,12 +119,7 @@ public class User : MonoBehaviour {
 		
 	}
 	
-	IEnumerator sendData ()
-	{
-		yield return new WaitForEndOfFrame();
-		
-		networkClass.SendData(bytesToSend());
-	}
+
 	
 	void addSoundSource(AudioClip sound)
 	{
@@ -175,7 +170,7 @@ public class User : MonoBehaviour {
 
 	*/
 		
-		StartCoroutine("sendData");
+		networkClass.SendData(bytesToSend());
 		
 	}
 }
