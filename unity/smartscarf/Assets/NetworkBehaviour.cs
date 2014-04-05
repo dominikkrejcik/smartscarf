@@ -22,8 +22,8 @@ public class NetworkBehaviour : MonoBehaviour {
 	private Socket m_Socket;
 	void Start () {
 		//client = new TcpClient ("54.246.121.80", 8214);
-		client=new TcpClient("54.246.121.80", 8214);
-		
+		client = new TcpClient ();//new TcpClient("54.246.121.80", 8214);
+		client.BeginConnect ("54.246.121.80", 8214, ConnectCallback, null);
 		
 	}
 	private void ConnectCallback(IAsyncResult result)
@@ -48,12 +48,9 @@ public class NetworkBehaviour : MonoBehaviour {
 		NetworkStream networkStream = client.GetStream();
 		byte[] buffer = new byte[client.ReceiveBufferSize];
 		//Now we are connected start asyn read operation.
-		//networkStream.BeginRead(buffer, 0, buffer.Length, ReadCallback, buffer);
+		networkStream.BeginRead(buffer, 0, buffer.Length, read, buffer);
 	}
-	
-	
-	
-	
+
 	private void read(IAsyncResult ar)
 	{ 
 		int BytesRead;
@@ -77,29 +74,19 @@ public class NetworkBehaviour : MonoBehaviour {
 		
 		readBuffer = ar.AsyncState as byte[];
 
-		//string data = Encoding.ASCII.GetString(readBuffer, 0, BytesRead);
-		//print(data);
+		string data = Encoding.ASCII.GetString(readBuffer, 0, BytesRead);
+		print(String.Format("{0:X}", data));
 		//Do something with the data object here.
 		//Then start reading from the network again.
-		client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
+		client.GetStream ().BeginRead (readBuffer, 0, readBuffer.Length, new AsyncCallback (read), null);
 
 	}
 
-	public byte[] asdf ()
+	public byte[] asdf()
 	{
 		return readBuffer;
-		//client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
 	}
-	
-	
-	
-	
-	public void SendData(byte[] Snoop)
-	{
-		
-		Write(Snoop);
-	}
-	
+
 	public void Write(byte[] bytes)
 	{
 		NetworkStream networkStream = client.GetStream();
@@ -116,20 +103,17 @@ public class NetworkBehaviour : MonoBehaviour {
 		NetworkStream networkStream = client.GetStream();
 		networkStream.EndWrite(result);
 	}
-	
-	
-	
-	
+
 	// Update is called once per frame
 	void Update () {
 		
 		// Start an asynchronous read invoking DoRead to avoid lagging the user
 		// interface.
 		//client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
-		if(readBuffer != null)
+		/*if(readBuffer != null)
 		{
 			client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
-		}
+		}*/
 	}
 	
 
