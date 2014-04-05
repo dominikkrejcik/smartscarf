@@ -76,7 +76,9 @@ public class NetworkBehaviour : MonoBehaviour {
 		}
 		
 		readBuffer = ar.AsyncState as byte[];
-		//string data = this.Encoding.GetString(buffer, 0, read);
+
+		//string data = Encoding.ASCII.GetString(readBuffer, 0, BytesRead);
+		//print(data);
 		//Do something with the data object here.
 		//Then start reading from the network again.
 		client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
@@ -124,7 +126,10 @@ public class NetworkBehaviour : MonoBehaviour {
 		// Start an asynchronous read invoking DoRead to avoid lagging the user
 		// interface.
 		//client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
-		client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
+		if(readBuffer != null)
+		{
+			client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
+		}
 	}
 	
 
