@@ -10,7 +10,7 @@ using System.Threading;
 public class NetworkBehaviour : MonoBehaviour {
 	
 	// Use this for initialization
-	
+
 	
 	const int READ_BUFFER_SIZE = 255;
 	
@@ -26,6 +26,12 @@ public class NetworkBehaviour : MonoBehaviour {
 		client.BeginConnect ("54.246.121.80", 8214, ConnectCallback, null);
 		
 	}
+
+	public void OnApplicationQuit()
+	{
+		client.Close ();
+	}
+
 	private void ConnectCallback(IAsyncResult result)
 	{
 		try
@@ -75,11 +81,10 @@ public class NetworkBehaviour : MonoBehaviour {
 		readBuffer = ar.AsyncState as byte[];
 
 		string data = Encoding.ASCII.GetString(readBuffer, 0, BytesRead);
-		print(String.Format("{0:X}", data));
+		print(data);
 		//Do something with the data object here.
 		//Then start reading from the network again.
 		client.GetStream ().BeginRead (readBuffer, 0, readBuffer.Length, new AsyncCallback (read), null);
-
 	}
 
 	public byte[] asdf()
@@ -106,14 +111,7 @@ public class NetworkBehaviour : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
-		// Start an asynchronous read invoking DoRead to avoid lagging the user
-		// interface.
-		//client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
-		/*if(readBuffer != null)
-		{
-			client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
-		}*/
+
 	}
 	
 
