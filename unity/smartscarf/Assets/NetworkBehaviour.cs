@@ -57,13 +57,11 @@ public class NetworkBehaviour: MonoBehaviour {
 	
 	
 	
-	public IEnumerator SendData(Byte[] data)
+	public void SendData(Byte[] data)
 	{
 		BinaryWriter writer = new BinaryWriter(client.GetStream());
 		writer.Write(data);
 		writer.Flush();
-		
-		yield return null;
 	}
 	
 	
@@ -76,7 +74,7 @@ public class NetworkBehaviour: MonoBehaviour {
 		
 		// Start an asynchronous read invoking DoRead to avoid lagging the user
 		// interface.
-		//client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
+		client.GetStream().BeginRead(readBuffer, 0, READ_BUFFER_SIZE, new AsyncCallback(read), null);
 		
 	}
 
