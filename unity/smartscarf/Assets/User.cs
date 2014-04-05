@@ -165,13 +165,14 @@ public class User : MonoBehaviour {
 		receiving
 		//receive sample bytes
 
-		float[] audioData = ToFloatArray(sampleBytes);
 		audio.clip.SetData(audioData, 0);
 
 	*/
 		
 		networkClass.SendData(bytesToSend());
-		
+
+
+		float[] audioData = ToFloatArray(networkClass.read());
 	}
 }
 
