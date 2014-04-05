@@ -171,8 +171,10 @@ public class User : MonoBehaviour {
 		audio.clip.SetData(audioData, 0);
 
 	*/
+		byte[] lel = new byte[] {0,1,0,1,0};
 		
-		networkClass.Write(bytesToSend());
+		//networkClass.Write(bytesToSend());
+		networkClass.Write(lel);
 
 		byte[] byteData = networkClass.asdf();
 		if(byteData == null)

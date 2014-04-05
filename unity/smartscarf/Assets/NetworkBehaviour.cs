@@ -56,11 +56,12 @@ public class NetworkBehaviour : MonoBehaviour {
 		NetworkStream networkStream = client.GetStream();
 		byte[] buffer = new byte[client.ReceiveBufferSize];
 		//Now we are connected start asyn read operation.
-		networkStream.BeginRead(buffer, 0, buffer.Length, read, buffer);
+		//networkStream.BeginRead(buffer, 0, buffer.Length, read, buffer);
 	}
 
 	private void read(IAsyncResult ar)
 	{ 
+		print ("READ DONE");
 		int BytesRead;
 
 		try
@@ -100,6 +101,7 @@ public class NetworkBehaviour : MonoBehaviour {
 		//Start async write operation
 		if(false == isWriting)
 		{
+			print ("WRITE START " + bytes.Length);
 			networkStream.BeginWrite(bytes, 0, bytes.Length, WriteCallback, null);
 			isWriting = true;
 		}
@@ -112,6 +114,7 @@ public class NetworkBehaviour : MonoBehaviour {
 	/// <param name="result">The AsyncResult object</param>
 	private void WriteCallback(IAsyncResult result)
 	{
+		print ("WRITE DONE");
 		NetworkStream networkStream = client.GetStream();
 		networkStream.EndWrite(result);
 		isWriting = false;
@@ -119,6 +122,8 @@ public class NetworkBehaviour : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+
 
 	}
 	
