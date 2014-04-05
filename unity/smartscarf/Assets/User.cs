@@ -46,9 +46,9 @@ public class User : MonoBehaviour {
 		int len = byteArray.Length / 4;
 		float[] floatArray = new float[len];
 		
-		for (int i = 0; i < byteArray.Length; i+=4)
+		for (int i = 0; i < byteArray.Length / 4; i++)
 		{
-			floatArray[i/4] = System.BitConverter.ToSingle(byteArray, i);
+			floatArray[i] = System.BitConverter.ToSingle(byteArray, i * 4);
 		}
 		
 		return floatArray;
