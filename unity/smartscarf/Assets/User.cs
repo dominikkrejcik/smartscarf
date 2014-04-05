@@ -9,6 +9,7 @@ public class User : MonoBehaviour {
 	
 	private bool connected = false;
 	private AudioListener userAudioListener;
+	private AudioSource playBackAudio;
 	private NetworkBehaviour networkClass;
 	private List<GameObject> sourceList = new List<GameObject>();
 	private byte[] sampleBytes;
@@ -19,7 +20,9 @@ public class User : MonoBehaviour {
 		
 		userAudioListener = GetComponent<AudioListener>();
 		networkClass = GetComponent<NetworkBehaviour>();
-		
+
+		playBackAudio = gameObject.AddComponent("AudioSource") as AudioSource;
+
 		micActivate();
 	}
 	
@@ -179,7 +182,8 @@ public class User : MonoBehaviour {
 
 		//print(byteData.Length);
 		float[] audioData = ToFloatArray(byteData);
-		audio.clip.SetData(audioData, 0);
+		playBackAudio.clip.SetData(audioData, 0);
+		playBackAudio.Play();
 	}
 }
 
