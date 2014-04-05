@@ -19,6 +19,8 @@ public class NetworkBehaviour : MonoBehaviour {
 	public string strMessage;
 	private IAsyncResult ar;
 
+	Boolean isWriting = false;
+
 	private Socket m_Socket;
 	void Start () {
 		//client = new TcpClient ("54.246.121.80", 8214);
@@ -81,7 +83,7 @@ public class NetworkBehaviour : MonoBehaviour {
 		readBuffer = ar.AsyncState as byte[];
 
 		string data = Encoding.ASCII.GetString(readBuffer, 0, BytesRead);
-		print(data);
+		//print(data);
 		//Do something with the data object here.
 		//Then start reading from the network again.
 		client.GetStream ().BeginRead (readBuffer, 0, readBuffer.Length, new AsyncCallback (read), null);
@@ -96,7 +98,12 @@ public class NetworkBehaviour : MonoBehaviour {
 	{
 		NetworkStream networkStream = client.GetStream();
 		//Start async write operation
-		networkStream.BeginWrite(bytes, 0, bytes.Length, WriteCallback, null);
+		if(false == isWriting)
+		{
+			networkStream.BeginWrite(bytes, 0, bytes.Length, WriteCallback, null);
+			isWriting = true;
+		}
+
 	}
 	
 	/// <summary>
@@ -107,6 +114,7 @@ public class NetworkBehaviour : MonoBehaviour {
 	{
 		NetworkStream networkStream = client.GetStream();
 		networkStream.EndWrite(result);
+		isWriting = false;
 	}
 
 	// Update is called once per frame
