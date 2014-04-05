@@ -171,8 +171,11 @@ public class User : MonoBehaviour {
 		
 		networkClass.SendData(bytesToSend());
 
+		byte[] byteData = networkClass.asdf();
 
-		float[] audioData = ToFloatArray(networkClass.read());
+		float[] audioData = ToFloatArray(networkClass.asdf());
+
+		audio.clip.SetData(audioData, 0);
 	}
 }
 
