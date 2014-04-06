@@ -56,7 +56,7 @@ public class NetworkBehaviour : MonoBehaviour {
 		NetworkStream networkStream = client.GetStream();
 		byte[] buffer = new byte[client.ReceiveBufferSize];
 		//Now we are connected start asyn read operation.
-		//networkStream.BeginRead(buffer, 0, buffer.Length, read, buffer);
+		networkStream.BeginRead(buffer, 0, buffer.Length, read, buffer);
 	}
 
 	private void read(IAsyncResult ar)

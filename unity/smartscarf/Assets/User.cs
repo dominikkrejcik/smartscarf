@@ -22,8 +22,8 @@ public class User : MonoBehaviour {
 		networkClass = GetComponent<NetworkBehaviour>();
 
 		playBackAudio = gameObject.AddComponent("AudioSource") as AudioSource;
-
 		micActivate();
+
 	}
 	
 	public byte[] ToByteArray(float[] floatArray) {
@@ -81,9 +81,10 @@ public class User : MonoBehaviour {
 	{
 		string selectedDevice = "Built-in Microphone";
 		
-		audio.clip = Microphone.Start(selectedDevice, true, 50, 44100);
+		audio.clip = Microphone.Start(selectedDevice, true,1, 10000);
+		audio.loop = true; // so it does not cut off!!! :D :D 
 		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
-		//audio.Play(); // Play the audio source!
+		audio.Play(); // Play the audio source!
 	}
 	
 	byte[] bytesToSend()
@@ -158,7 +159,7 @@ public class User : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		
+
 		/*
 	 * 
 	 * sending:
@@ -173,19 +174,20 @@ public class User : MonoBehaviour {
 	*/
 		byte[] lel = new byte[] {0,1,0,1,0};
 		
-		//networkClass.Write(bytesToSend());
-		networkClass.Write(lel);
+		networkClass.Write(bytesToSend());
+		//networkClass.Write(lel);
 
 		byte[] byteData = networkClass.asdf();
+		//networkClass.
 		if(byteData == null)
 		{
 			return;
 		}
 
 		//print(byteData.Length);
-		float[] audioData = ToFloatArray(byteData);
-		playBackAudio.clip.SetData(audioData, 0);
-		playBackAudio.Play();
+	//	float[] audioData = ToFloatArray(byteData);
+	//	playBackAudio.clip.SetData(audioData, 0);
+	//	playBackAudio.Play();
 	}
 }
 
