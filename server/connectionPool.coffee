@@ -13,6 +13,9 @@ class ConnectionPool
     conn.unpipe()
     conn.removeAllListeners()
 
+  connectionCount: ->
+    @_connections.length
+
   _pipeConnections: (connA, connB) ->
     connA.read()
     connB.read()
