@@ -3,15 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class User : MonoBehaviour {
-	
-	public GameObject soundSource;
+
 	public AudioClip sound;
 	
 	private bool connected = false;
 	private AudioListener userAudioListener;
 	private AudioSource playBackAudio;
 	private NetworkBehaviour networkClass;
-	private List<GameObject> sourceList = new List<GameObject>();
+	private SoundManager soundManagerClass;
 	private byte[] sampleBytes;
 	int sada;
 	
@@ -20,6 +19,7 @@ public class User : MonoBehaviour {
 		
 		userAudioListener = GetComponent<AudioListener>();
 		networkClass = GetComponent<NetworkBehaviour>();
+		soundManagerClass = GetComponent<SoundManager>();
 
 		playBackAudio = gameObject.AddComponent("AudioSource") as AudioSource;
 		micActivate();
@@ -99,62 +99,28 @@ public class User : MonoBehaviour {
 	void connect()
 	{
 		//establish a connection to the server
-		
-		addSoundSource(sound);
-		addSoundSource(sound);
-		addSoundSource(sound);
-		
+
 		//wait on success message
 		connected = true;
 		renderer.enabled = true;
 		userAudioListener.enabled = true;
+		soundManagerClass.enabled = true;
 	}
 	
 	void disconnect()
 	{
 		//break connection from the server
-		
-		removeSoundSources();
+
 		
 		//wait on success message
+		soundManagerClass.removeSoundSources();
+
 		connected = false;
 		renderer.enabled = false;
 		userAudioListener.enabled = false;
-		
+		soundManagerClass.enabled = false;
 	}
-	
 
-	
-	void addSoundSource(AudioClip sound)
-	{
-		Vector3 posistionVector = getNewPosistionVecotr();
-		
-		GameObject source = Instantiate(soundSource, posistionVector, Quaternion.identity) as GameObject;
-		
-		sourceList.Add(source);
-		
-		AudioSource sourceComponent = source.GetComponent<AudioSource>();
-		sourceComponent.PlayOneShot(sound);
-	}
-	
-	Vector3 getNewPosistionVecotr()
-	{
-		//place sources around user
-		
-		return (Quaternion.Euler(0, 0, ((360f)/(sourceList.Count+1)	)) * Vector3.right * 4);
-		
-	}
-	
-	void removeSoundSources()
-	{
-		
-		for (int i=0; i < sourceList.Count; i++)
-		{
-			Destroy(sourceList[i]);
-		}
-		
-		sourceList.Clear();
-	}
 	
 	// Update is called once per frame
 	void Update () {
