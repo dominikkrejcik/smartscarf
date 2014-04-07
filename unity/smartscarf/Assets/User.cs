@@ -185,15 +185,10 @@ public class User : MonoBehaviour {
 		}
 
 		//print(byteData.Length);
-<<<<<<< HEAD
-		float[] audioData = ToFloatArray(byteData);
-		//playBackAudio.clip.SetData(audioData, 0);
-		playBackAudio.Play();
-=======
+
 	//	float[] audioData = ToFloatArray(byteData);
 	//	playBackAudio.clip.SetData(audioData, 0);
 	//	playBackAudio.Play();
->>>>>>> 2c5141f58ddaf587a427f6d340390860b14c74b3
 	}
 }
 
