@@ -184,7 +184,7 @@ public class User : MonoBehaviour {
 
 		//print(byteData.Length);
 		float[] audioData = ToFloatArray(byteData);
-		playBackAudio.clip.SetData(audioData, 0);
+		//playBackAudio.clip.SetData(audioData, 0);
 		playBackAudio.Play();
 	}
 }
