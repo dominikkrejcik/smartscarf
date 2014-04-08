@@ -5,21 +5,15 @@ using System.Collections.Generic;
 public class SoundManager : MonoBehaviour {
 	
 	public GameObject soundSource;
-	public AudioClip clip;
 
-	
 	private List<GameObject> audioSourceList = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
-		float[] samples = new float[clip.samples * clip.channels];
 
-		clip.GetData(samples, 0);
-
-		receiveFloats(samples, 0);
 	}
-	
-	Vector3 getNewPosistionVecotr()
+
+	Vector3 getNewPosistionVector()
 	{
 		//place sources around user
 		
@@ -27,22 +21,20 @@ public class SoundManager : MonoBehaviour {
 		
 	}
 
-	void addSoundSource(AudioClip sound)
+	void addSoundSource(AudioClip sound, int ID)
 	{
-		Vector3 posistionVector = getNewPosistionVecotr();
-		
+		Vector3 posistionVector = getNewPosistionVector();
 		GameObject source = Instantiate(soundSource, posistionVector, Quaternion.identity) as GameObject;
-		
 		audioSourceList.Add(source);
-		
-		AudioSource sourceComponent = source.GetComponent<AudioSource>();
-		sourceComponent.PlayOneShot(sound);
+
+		updateSoundSource(sound, ID);
 	}
 
 	void updateSoundSource(AudioClip sound, int ID)
 	{
 		AudioSource sourceComponent = audioSourceList[ID].GetComponent<AudioSource>();
-		sourceComponent.PlayOneShot(sound);
+		sourceComponent.audio.clip = sound;
+		sourceComponent.Play();
 	}
 
 	void removeSoundSource(int ID)
@@ -62,16 +54,17 @@ public class SoundManager : MonoBehaviour {
 		audioSourceList.Clear();
 	}
 
-	void receiveFloats(float[] dataFloats, int ID)
+	public void receiveFloats(float[] dataFloats, int ID)
 	{
-		AudioClip soundClip = clip;
+
+		AudioClip soundClip = AudioClip.Create("clip", dataFloats.Length, 1, 10000, true, false);
 
 		soundClip.SetData(dataFloats, 0);
 
 		if (ID >= audioSourceList.Count)
 		{
 			//add new source
-			addSoundSource(soundClip);
+			addSoundSource(soundClip, ID);
 
 		}
 		else

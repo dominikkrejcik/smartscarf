@@ -11,9 +11,10 @@ public class User : MonoBehaviour {
 	private AudioSource playBackAudio;
 	private NetworkBehaviour networkClass;
 	private SoundManager soundManagerClass;
-	private byte[] sampleBytes;
 	int sada;
-	
+
+	bool testBool = false;
+
 	// Use thisous for initialization
 	void Start () {
 		
@@ -21,8 +22,9 @@ public class User : MonoBehaviour {
 		networkClass = GetComponent<NetworkBehaviour>();
 		soundManagerClass = GetComponent<SoundManager>();
 
-		playBackAudio = gameObject.AddComponent("AudioSource") as AudioSource;
 		micActivate();
+
+		//InvokeRepeating("testFunc", 0f, 1f);
 
 	}
 	
@@ -81,17 +83,17 @@ public class User : MonoBehaviour {
 	{
 		string selectedDevice = "Built-in Microphone";
 		
-		audio.clip = Microphone.Start(selectedDevice, true,1, 10000);
+		audio.clip = Microphone.Start(selectedDevice, true, 1, 10000);
 		audio.loop = true; // so it does not cut off!!! :D :D 
 		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
-		audio.Play(); // Play the audio source!
+		//audio.Play(); // Play the audio source!
 	}
 	
 	byte[] bytesToSend()
 	{
 		float[] audioData = new float[audio.clip.samples * audio.clip.channels];
-		audio.clip.GetData(audioData, 0);
-		
+		audio.clip.GetData(audioData, 1);
+
 		return ToByteArray(audioData);
 		
 	}
@@ -105,6 +107,8 @@ public class User : MonoBehaviour {
 		renderer.enabled = true;
 		userAudioListener.enabled = true;
 		soundManagerClass.enabled = true;
+
+		//testBool = true;
 	}
 	
 	void disconnect()
@@ -119,32 +123,31 @@ public class User : MonoBehaviour {
 		renderer.enabled = false;
 		userAudioListener.enabled = false;
 		soundManagerClass.enabled = false;
+
+		//testBool = false;
 	}
 
+	void testFunc()
+	{
+		if (testBool)
+		{
+			float[] testArr = ToFloatArray(bytesToSend());
+			
+			soundManagerClass.receiveFloats(testArr, 0);
+		}
+
+	}
 	
 	// Update is called once per frame
 	void Update () {
-		
 
-		/*
-	 * 
-	 * sending:
-		sampleBytes = bytesToSend();
-		//then send smaplebtess off
-
-		receiving
-		//receive sample bytes
-
-		audio.clip.SetData(audioData, 0);
-
-	*/
 		byte[] lel = new byte[] {0,1,0,1,0};
 		
 		networkClass.Write(bytesToSend());
 		//networkClass.Write(lel);
 
 		byte[] byteData = networkClass.asdf();
-		//networkClass.
+
 		if(byteData == null)
 		{
 			return;
@@ -152,9 +155,6 @@ public class User : MonoBehaviour {
 
 		//print(byteData.Length);
 
-	//	float[] audioData = ToFloatArray(byteData);
-	//	playBackAudio.clip.SetData(audioData, 0);
-	//	playBackAudio.Play();
 	}
 }
 
