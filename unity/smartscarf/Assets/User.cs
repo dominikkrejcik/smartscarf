@@ -240,9 +240,11 @@ public class User : MonoBehaviour {
 		{
 		//print (networkClass.recived_data.Count);
 		}
-		if(networkClass.recived_data.Count>0&&check==false)
+		Queue<byte[]> recived_data = networkClass.getQueue();
+
+		if(recived_data.Count>0&&check==false)
 		{
-			byte[] byteData =networkClass.recived_data.Dequeue ();
+			byte[] byteData =recived_data.Dequeue ();
 //			print (byteData.Length);
 			//string dat = Encoding.ASCII.GetString((byteData), 0, byteData.Length);
 			//print (dat);
