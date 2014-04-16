@@ -18,9 +18,9 @@ public class User : MonoBehaviour {
 	private NetworkBehaviour networkClass;
 	private SoundManager soundManagerClass;
 	int sada;
-	private int length=1374;
+	private int length=8001;
 	private int difference = 1;
-	private byte[] newData = new byte [1373];
+	private byte[] newData = new byte [8000];
 	private int id;
 	bool testBool = false;
 	private Boolean check=false;
@@ -94,10 +94,10 @@ public class User : MonoBehaviour {
 	{
 		string selectedDevice = "Built-in Microphone";
 		
-		audio.clip = Microphone.Start(selectedDevice, true, 1, 8000);
+		audio.clip = Microphone.Start(selectedDevice, true, 1, 2000);
 		audio.loop = true; // so it does not cut off!!! :D :D 
 		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
-		//audio.Play(); // Play the audio source!
+		audio.Play(); // Play the audio source!
 	}
 	
 	byte[] bytesToSend()
@@ -271,10 +271,11 @@ public class User : MonoBehaviour {
 		byte[] lel = new byte[] {0,1,0,1,0};
 
 		if(connected)
-		{
+		{   
+			//print(bytesToSend().Length);
 			networkClass.Write(bytesToSend());
 		}
-		networkClass.Write(lel);
+
 		StartCoroutine ("get");
 		//print (networkClass.recived_data.Count );
 

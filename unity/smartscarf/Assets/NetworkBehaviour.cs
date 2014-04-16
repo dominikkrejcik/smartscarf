@@ -16,10 +16,10 @@ public class NetworkBehaviour : MonoBehaviour {
 	private bool wait=true;
 	private int index;
 	private int count;
-	private int length=1374;
+	private int length=8001;
 	private int difference = 1;
 	Boolean isWriting = false;
-	private byte[] newData = new byte [1373];
+	private byte[] newData = new byte [8000];
 	private Queue<byte[]> recived_data = new Queue<byte[]>();
 	
 	void Start()
@@ -129,90 +129,17 @@ public class NetworkBehaviour : MonoBehaviour {
 		}
 	}
 	
-	private void  checkData(byte[] data, int message_length)
-	{   
-		if("0".Equals(Encoding.ASCII.GetString((data), 0, 1)) && difference==1)
-		{   
-			int id=0;
-			
-			print (newData.Length+"ll");
-			//print (message_length-1);
-			//print (length-1+"sdsd");
-			verifyData (data,newData,message_length-1,1);
-		}
-		
-		
-		else if(difference>1)
-		{  //print ("f");
-			verifyData (data,newData,message_length,0);
-		}
-		else if(difference==1 && "N".Equals(Encoding.ASCII.GetString((data), 0, 1)) )
-		{
-			print ("no one there fuck off");
-			
-		}
-		
-		
-		
-	}
-	
-	private void  verifyData (byte[] data,byte[] newData, int message_length,int offset)
-	{
-		if((length-1) == message_length)
-		{  
-			
-			//print (newData.Length+"SAda");
-			
-			Buffer.BlockCopy(data, offset, newData, 0, message_length-1);
-			//print (newData.Length+"Recieved "+BitConverter.ToString(newData));
-			
-			difference=newData.Length;
-			
-		}
-		
-		else if(length-1 >= message_length)
-		{   print ("arrive");
-			//print (difference);
-			Buffer.BlockCopy(data, offset, newData, difference-1, message_length);
-			difference=message_length+difference;
-			//print (newData.Length+"Recieved "+BitConverter.ToString(newData));
-			
-		}
-		
-		
-		
-	}
-	
-	
-	private byte[] getData(int message_length)
-	{   print (difference);
-		print (message_length+"KK");
-		if(difference==message_length)
-		{   //print("kk");
-			byte[] finalData= new byte[newData.Length];
-			difference=1;
-			Buffer.BlockCopy(newData, 0,finalData, 0, newData.Length);
-			Array.Clear(newData,0,newData.Length);
-			string dat = Encoding.ASCII.GetString((finalData), 0, newData.Length);
-			print (dat);
-			return newData;
-			
-		}
-		return null;
-	}
-	
 
-	
 	
 	public void Write(byte[] bytes)
 	{   
 		System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
-		byte[] buf = encoding.GetBytes ("This block of text goes on and on and does not have any visual separation between what would normally make up a new paragraph. Instead, it will continue to have more text added to it and look like it has not been formatted. It just keeps going and going and going and will start new topics without separating them with paragraphs. You see, even though this is nice, let's talk about Cascading Style Sheets (CSS), oftentimes called style sheets, for a minute.This block of text goes on and on and does not have any visual separation between what would normally make up a new paragraph. Instead, it will continue to have more text added to it and look like it has not been formatted. It just keeps going and going and going and will start new topics without separating them with paragraphs. You see, even though this is nice, let's talk about Cascading Style Sheets (CSS), oftentimes called style sheets, for a minute.This block of text goes on and on and does not have any visual separation between what would normally make up a new paragraph. Instead, it will continue to have more text added to it and look like it has not been formatted. It just keeps going and going and going and will start new topics without separating them with paragraphs. You see, even though this is nice, let's talk about Cascading Style Sheets (CSS), oftentimes called style sheets, for a minute");
+	//	byte[] buf = encoding.GetBytes ("This block of text goes on and on and does not have any visual separation between what would normally make up a new paragraph. Instead, it will continue to have more text added to it and look like it has not been formatted. It just keeps going and going and going and will start new topics without separating them with paragraphs. You see, even though this is nice, let's talk about Cascading Style Sheets (CSS), oftentimes called style sheets, for a minute.This block of text goes on and on and does not have any visual separation between what would normally make up a new paragraph. Instead, it will continue to have more text added to it and look like it has not been formatted. It just keeps going and going and going and will start new topics without separating them with paragraphs. You see, even though this is nice, let's talk about Cascading Style Sheets (CSS), oftentimes called style sheets, for a minute.This block of text goes on and on and does not have any visual separation between what would normally make up a new paragraph. Instead, it will continue to have more text added to it and look like it has not been formatted. It just keeps going and going and going and will start new topics without separating them with paragraphs. You see, even though this is nice, let's talk about Cascading Style Sheets (CSS), oftentimes called style sheets, for a minute");
 		
 		byte[] id = encoding.GetBytes ("1");
-		byte[] buffer = new byte[ id.Length + buf.Length];
+		byte[] buffer = new byte[ id.Length + bytes.Length];
 		System.Buffer.BlockCopy( id, 0, buffer, 0, id.Length );
-		System.Buffer.BlockCopy( buf, 0, buffer, id.Length, buf.Length );
+		System.Buffer.BlockCopy( bytes, 0, buffer, id.Length, bytes.Length );
 		//print (buffer.Length);
 		NetworkStream networkStream = client.GetStream();
 		//Start async write operation
