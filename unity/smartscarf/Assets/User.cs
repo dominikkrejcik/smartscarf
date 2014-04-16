@@ -94,7 +94,7 @@ public class User : MonoBehaviour {
 	{
 		string selectedDevice = "Built-in Microphone";
 		
-		audio.clip = Microphone.Start(selectedDevice, true, 1, 10000);
+		audio.clip = Microphone.Start(selectedDevice, true, 1, 8000);
 		audio.loop = true; // so it does not cut off!!! :D :D 
 		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
 		//audio.Play(); // Play the audio source!
