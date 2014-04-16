@@ -251,7 +251,8 @@ public class User : MonoBehaviour {
 			checkData(byteData,byteData.Length);
 //			print ("HI");
 			complete=false;
-			 getData(length);
+			float[] data = ToFloatArray(getData(length));
+			soundManagerClass.receiveFloats(data, id);
 			return null;
 		}
 		return null;
