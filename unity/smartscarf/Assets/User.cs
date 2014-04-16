@@ -269,8 +269,11 @@ public class User : MonoBehaviour {
 	void Update () {
 
 		byte[] lel = new byte[] {0,1,0,1,0};
-		
-		//networkClass.Write(bytesToSend());
+
+		if(connected)
+		{
+			networkClass.Write(bytesToSend());
+		}
 		networkClass.Write(lel);
 		StartCoroutine ("get");
 		//print (networkClass.recived_data.Count );
