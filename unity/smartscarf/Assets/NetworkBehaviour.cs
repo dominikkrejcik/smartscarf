@@ -68,10 +68,11 @@ public class NetworkBehaviour : MonoBehaviour {
 		}
 		
 		try
-		{   print ("Connected");
+		{   
 			NetworkStream networkStream = client.GetStream();
 			client.ReceiveBufferSize =length;
 			byte[] buffer = new byte[client.ReceiveBufferSize];
+			print ("Connected");
 			//print(BitConverter.ToString(buffer));
 			networkStream.BeginRead(buffer, 0, buffer.Length, ClientReadCallback, buffer);
 		}
