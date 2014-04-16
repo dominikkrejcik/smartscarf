@@ -172,7 +172,7 @@ public class User : MonoBehaviour {
 		}
 		
 		else if(difference>1&&complete==false)
-		{  // print ("f");
+		{   print ("f");
 
 			verifyData (data,newData,message_length,0);
 		}
@@ -187,7 +187,8 @@ public class User : MonoBehaviour {
 	}
 	
 	private void  verifyData (byte[] data,byte[] newData, int message_length,int offset)
-	{
+	{   
+		check=false;
 		if((length-1) == message_length)
 		{  
 			
@@ -203,7 +204,7 @@ public class User : MonoBehaviour {
 		}
 		
 		else if(length-1 >= message_length)
-		{  //  print ("arrive");
+		{    print ("arrive");
 			//print (difference);
 			Buffer.BlockCopy(data, offset, newData, difference-1, message_length);
 			difference=message_length+difference;
@@ -235,25 +236,32 @@ public class User : MonoBehaviour {
 		}
 		return null;
 	}
+
+
+
 	IEnumerator get() {
 		if(check==false)
 		{
-		//print (networkClass.recived_data.Count);
+			//print (networkClass.recived_data.Count);
 		}
 		Queue<byte[]> recived_data = networkClass.getQueue();
-
+		
 		if(recived_data.Count>0&&check==false)
 		{
 			byte[] byteData =recived_data.Dequeue ();
-//			print (byteData.Length);
+			//			print (byteData.Length);
 			//string dat = Encoding.ASCII.GetString((byteData), 0, byteData.Length);
 			//print (dat);
 			checkData(byteData,byteData.Length);
-//			print ("HI");
+			//			print ("HI");
 			complete=false;
-			float[] data = ToFloatArray(getData(length));
+			byte [] lastData= getData (length);
+			if (lastData !=null){
+			
+			float[] data = ToFloatArray(lastData);
 			soundManagerClass.receiveFloats(data, id);
 			return null;
+			}
 		}
 		return null;
 	}

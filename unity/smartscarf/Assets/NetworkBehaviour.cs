@@ -112,7 +112,7 @@ public class NetworkBehaviour : MonoBehaviour {
 				//string dat = Encoding.ASCII.GetString((data), 0, read);
 				//print (buffer.Length+"Recieved"+"  "+dat+"  "+BitConverter.ToString(buffer));
 				//checkData(buffer,read);
-				print ("hhhsad");
+				//print ("hhhsad");
 				//getData(length);
 				recived_data.Enqueue(data);
 				//byte[] byteData =recived_data.Dequeue ();
