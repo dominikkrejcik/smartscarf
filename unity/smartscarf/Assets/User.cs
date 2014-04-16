@@ -1,6 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using System;
+using System.IO;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using System.Collections.Generic;
+
 
 public class User : MonoBehaviour {
 
@@ -12,8 +18,13 @@ public class User : MonoBehaviour {
 	private NetworkBehaviour networkClass;
 	private SoundManager soundManagerClass;
 	int sada;
-
+	private int length=1374;
+	private int difference = 1;
+	private byte[] newData = new byte [1373];
+	private int id;
 	bool testBool = false;
+	private Boolean check=false;
+	private Boolean complete=false;
 
 	// Use thisous for initialization
 	void Start () {
@@ -137,25 +148,123 @@ public class User : MonoBehaviour {
 		}
 
 	}
+
+	private void  checkData(byte[] data, int message_length)
+	{   
+
+		if("0".Equals(Encoding.ASCII.GetString((data), 0, 1)) && difference==1)
+		{   
+			id=0;
+			
+			//print (newData.Length+"ll");
+			//print (message_length-1);
+			//print (length-1+"sdsd");
+			verifyData (data,newData,message_length-1,1);
+		}
+		if("1".Equals(Encoding.ASCII.GetString((data), 0, 1)) && difference==1)
+		{   
+			id=1;
+			
+			//print (newData.Length+"ll");
+			//print (message_length-1);
+			//print (length-1+"sdsd");
+			verifyData (data,newData,message_length-1,1);
+		}
+		
+		else if(difference>1&&complete==false)
+		{  // print ("f");
+
+			verifyData (data,newData,message_length,0);
+		}
+		else if(difference==1 && "N".Equals(Encoding.ASCII.GetString((data), 0, 1)) )
+		{
+		//	print ("no one there fuck off");
+			
+		}
+		
+		
+		
+	}
 	
+	private void  verifyData (byte[] data,byte[] newData, int message_length,int offset)
+	{
+		if((length-1) == message_length)
+		{  
+			
+			//print (newData.Length+"SAda");
+			
+			Buffer.BlockCopy(data, offset, newData, 0, message_length-1);
+			//print (newData.Length+"Recieved "+BitConverter.ToString(newData));
+			//print (difference);
+			difference=newData.Length+difference;
+			//print (difference);
+			check=true;
+			complete=true;
+		}
+		
+		else if(length-1 >= message_length)
+		{  //  print ("arrive");
+			//print (difference);
+			Buffer.BlockCopy(data, offset, newData, difference-1, message_length);
+			difference=message_length+difference;
+			//print (newData.Length+"Recieved "+BitConverter.ToString(newData));
+			check=false;
+			complete=true;
+		}
+		
+		
+		
+	}
+	
+	
+	private byte[] getData(int message_length)
+	{   //print (difference);
+		//print (message_length+"KK");
+		if(difference==message_length)
+		{   //print("kk");
+			byte[] finalData= new byte[newData.Length];
+			difference=1;
+			Buffer.BlockCopy(newData, 0,finalData, 0, newData.Length);
+			Array.Clear(newData,0,newData.Length);
+			//string dat = Encoding.ASCII.GetString((finalData), 0, newData.Length);
+			print (finalData.Length+" " +id);
+			check= false;
+			complete=false;
+			return newData;
+			
+		}
+		return null;
+	}
+	IEnumerator get() {
+		if(check==false)
+		{
+		//print (networkClass.recived_data.Count);
+		}
+		if(networkClass.recived_data.Count>0&&check==false)
+		{
+			byte[] byteData =networkClass.recived_data.Dequeue ();
+//			print (byteData.Length);
+			//string dat = Encoding.ASCII.GetString((byteData), 0, byteData.Length);
+			//print (dat);
+			checkData(byteData,byteData.Length);
+//			print ("HI");
+			complete=false;
+			 getData(length);
+			return null;
+		}
+		return null;
+	}
 	// Update is called once per frame
 	void Update () {
 
 		byte[] lel = new byte[] {0,1,0,1,0};
 		
-		networkClass.Write(bytesToSend());
-		//networkClass.Write(lel);
+		//networkClass.Write(bytesToSend());
+		networkClass.Write(lel);
+		StartCoroutine ("get");
+		//print (networkClass.recived_data.Count );
 
-		byte[] byteData = networkClass.asdf();
-
-		if(byteData == null)
-		{
-			return;
-		}
-
-		//print(byteData.Length);
-
-	}
 }
 
 
+}
