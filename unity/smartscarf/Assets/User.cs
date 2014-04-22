@@ -196,7 +196,7 @@ public class User : MonoBehaviour {
 
   void  testFunc()
 	{   
-	      if (put_data.Count > 0&&index>2) 
+	      if (put_data.Count > 0) 
 		{
 			print (put_data.Count);
 		
@@ -305,9 +305,6 @@ public class User : MonoBehaviour {
 			Array.Clear(newData,0,newData.Length);
 	
 
-			string dat = Encoding.ASCII.GetString((finalData), 0, newData.Length);
-
-
 		    if(backUpData==true)
 			{  
 			
@@ -344,9 +341,7 @@ public class User : MonoBehaviour {
 
 				put_data.Enqueue(lastData);
 		
-				index++;
-		
-      			print (")");
+
 
 			
 			return null;
@@ -369,7 +364,7 @@ public class User : MonoBehaviour {
 		}
 
 
-		//print (networkClass.recived_data.Count );
+	
 
 }
 
