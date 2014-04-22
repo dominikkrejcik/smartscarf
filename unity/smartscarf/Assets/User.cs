@@ -42,9 +42,7 @@ public class User : MonoBehaviour {
 
 	// Use thisous for initialization
 	void Start () {
-
-		audioData  = new float[audio.clip.samples * audio.clip.channels];
-	
+			
 		userAudioListener = GetComponent<AudioListener>();
 		networkClass = GetComponent<NetworkBehaviour>();
 		soundManagerClass = GetComponent<SoundManager>();
@@ -52,6 +50,8 @@ public class User : MonoBehaviour {
 		micActivate();
 		InvokeRepeating("bytesToSend", 0f, 1f);
 	    InvokeRepeating ("testFunc", 0f,    1f);
+
+		audioData  = new float[audio.clip.samples * audio.clip.channels];
 	}
 	
 	public byte[] ToByteArray(float[] floatArray) {
