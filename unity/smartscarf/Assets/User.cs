@@ -268,7 +268,7 @@ public class User : MonoBehaviour {
 		else if(length-1 >= message_length)
 		{   
 
-			if(difference+message_length<=16001)
+			if(difference+message_length<=32001)
 			{
 			Buffer.BlockCopy(data, offset, newData, difference-1, message_length);
 			difference=message_length+difference;
@@ -276,10 +276,10 @@ public class User : MonoBehaviour {
 			check=false;
 			complete=true;
 			}
-			else if(difference+message_length>16001)
+			else if(difference+message_length>32001)
 			{   
 			
-				int delta=(16001-difference);
+				int delta=(32001-difference);
 				int copy= data.Length-delta;
 	
 				backup =new byte[copy];
@@ -355,7 +355,7 @@ public class User : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		byte[] lel = new byte[] {0,1,0,1,0};
+	
 
 		if(connected)
 		{   
