@@ -48,8 +48,12 @@ public class User : MonoBehaviour {
 		soundManagerClass = GetComponent<SoundManager>();
 
 		micActivate();
+
 		InvokeRepeating("bytesToSend", 0f, 1f);
 	    InvokeRepeating ("testFunc", 0f,    1f);
+
+
+	
 
 		audioData  = new float[audio.clip.samples * audio.clip.channels];
 		print (audioData.Length);
