@@ -17,14 +17,17 @@ public class User : MonoBehaviour {
 	private AudioSource playBackAudio;
 	private NetworkBehaviour networkClass;
 	private SoundManager soundManagerClass;
-	int sada;
-	private int length=8001;
+	private int length=16001;
 	private int difference = 1;
-	private byte[] newData = new byte [8000];
+	private byte[] newData = new byte [16000];
+	private byte[] backup ;//= new byte [8000];
 	private int id;
 	bool testBool = false;
+	bool backUpData=false;
 	private Boolean check=false;
 	private Boolean complete=false;
+	private Queue<byte[]> put_data = new Queue<byte[]>();
+	private Queue<byte[]> send_data = new Queue<byte[]>();
 
 	// Use thisous for initialization
 	void Start () {
@@ -34,9 +37,8 @@ public class User : MonoBehaviour {
 		soundManagerClass = GetComponent<SoundManager>();
 
 		micActivate();
-
-		//InvokeRepeating("testFunc", 0f, 1f);
-
+		InvokeRepeating("bytesToSend", 0f, 1.1f);
+		InvokeRepeating ("testFunc", 0f, 1.1f);
 	}
 	
 	public byte[] ToByteArray(float[] floatArray) {
@@ -94,18 +96,19 @@ public class User : MonoBehaviour {
 	{
 		string selectedDevice = "Built-in Microphone";
 		
-		audio.clip = Microphone.Start(selectedDevice, true, 1, 2000);
+		audio.clip = Microphone.Start(selectedDevice, true, 1, 4000);
 		audio.loop = true; // so it does not cut off!!! :D :D 
 		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
 		//audio.Play(); // Play the audio source!
 	}
 	
-	byte[] bytesToSend()
-	{
+	void bytesToSend()
+	{   
+		int i=0;
 		float[] audioData = new float[audio.clip.samples * audio.clip.channels];
-		audio.clip.GetData(audioData, 1);
-
-		return ToByteArray(audioData);
+		audio.clip.GetData(audioData, 0);
+		byte[] audioarray = ToByteArray (audioData);
+	    send_data.Enqueue(audioarray);
 		
 	}
 	
@@ -119,7 +122,7 @@ public class User : MonoBehaviour {
 		userAudioListener.enabled = true;
 		soundManagerClass.enabled = true;
 
-		//testBool = true;
+		testBool = true;
 	}
 	
 	void disconnect()
@@ -140,13 +143,22 @@ public class User : MonoBehaviour {
 
 	void testFunc()
 	{
-		if (testBool)
+	      if (put_data.Count > 0) 
 		{
-			float[] testArr = ToFloatArray(bytesToSend());
-			
-			soundManagerClass.receiveFloats(testArr, 0);
+			byte[] send = put_data.Dequeue();
+			float[] testArr = ToFloatArray (send);
+			soundManagerClass.receiveFloats (testArr, 0);
+		    testBool = false;
+				
 		}
+	}
 
+	void send()
+	{      
+		if (send_data.Count > 0)
+		{
+		 networkClass.Write(send_data.Dequeue());
+		}
 	}
 
 	private void  checkData(byte[] data, int message_length)
@@ -155,30 +167,21 @@ public class User : MonoBehaviour {
 		if("0".Equals(Encoding.ASCII.GetString((data), 0, 1)) && difference==1)
 		{   
 			id=0;
-			
-			//print (newData.Length+"ll");
-			//print (message_length-1);
-			//print (length-1+"sdsd");
-			verifyData (data,newData,message_length-1,1);
+	        verifyData (data,newData,message_length-1,1);
 		}
 		if("1".Equals(Encoding.ASCII.GetString((data), 0, 1)) && difference==1)
 		{   
 			id=1;
-			
-			//print (newData.Length+"ll");
-			//print (message_length-1);
-			//print (length-1+"sdsd");
 			verifyData (data,newData,message_length-1,1);
 		}
 		
 		else if(difference>1&&complete==false)
-		{   print ("f");
-
+		{  
 			verifyData (data,newData,message_length,0);
 		}
 		else if(difference==1 && "N".Equals(Encoding.ASCII.GetString((data), 0, 1)) )
 		{
-		//	print ("no one there fuck off");
+		
 			
 		}
 		
@@ -192,46 +195,63 @@ public class User : MonoBehaviour {
 		if((length-1) == message_length)
 		{  
 			
-			//print (newData.Length+"SAda");
+
 			
 			Buffer.BlockCopy(data, offset, newData, 0, message_length-1);
-			//print (newData.Length+"Recieved "+BitConverter.ToString(newData));
-			//print (difference);
 			difference=newData.Length+difference;
-			//print (difference);
 			check=true;
 			complete=true;
 		}
 		
 		else if(length-1 >= message_length)
-		{    print ("arrive");
-			//print (difference);
+		{   
+
+			if(difference+message_length<=16001)
+			{
 			Buffer.BlockCopy(data, offset, newData, difference-1, message_length);
 			difference=message_length+difference;
-			//print (newData.Length+"Recieved "+BitConverter.ToString(newData));
 			check=false;
 			complete=true;
+			}
+			else if(difference+message_length>16001)
+			{   
+				int delta=(16001-difference);
+				int copy= data.Length-delta;
+				backup =new byte[copy];
+				Buffer.BlockCopy(data,offset,newData,difference-1,delta);
+				Buffer.BlockCopy(data,delta,backup,0,copy);
+				difference=difference+delta;
+			
+				backUpData=true;
+				check=false;
+				complete=true;
+			}
 		}
-		
-		
-		
 	}
 	
 	
 	private byte[] getData(int message_length)
-	{   //print (difference);
-		//print (message_length+"KK");
+	{    
 		if(difference==message_length)
-		{   //print("kk");
+		{   
 			byte[] finalData= new byte[newData.Length];
 			difference=1;
 			Buffer.BlockCopy(newData, 0,finalData, 0, newData.Length);
 			Array.Clear(newData,0,newData.Length);
-			//string dat = Encoding.ASCII.GetString((finalData), 0, newData.Length);
-			print (finalData.Length+" " +id);
+	
+
+			string dat = Encoding.ASCII.GetString((finalData), 0, newData.Length);
+		
+
+		    if(backUpData==true)
+			{  
+				checkData(backup,backup.Length);
+				backUpData=false;
+			}
+
 			check= false;
 			complete=false;
-			return newData;
+			return finalData;
 			
 		}
 		return null;
@@ -242,44 +262,44 @@ public class User : MonoBehaviour {
 	IEnumerator get() {
 		if(check==false)
 		{
-			//print (networkClass.recived_data.Count);
+
 		}
 		Queue<byte[]> recived_data = networkClass.getQueue();
 		
 		if(recived_data.Count>0&&check==false)
 		{
 			byte[] byteData =recived_data.Dequeue ();
-			//			print (byteData.Length);
-			//string dat = Encoding.ASCII.GetString((byteData), 0, byteData.Length);
-			//print (dat);
 			checkData(byteData,byteData.Length);
-			//			print ("HI");
 			complete=false;
 			byte [] lastData= getData (length);
-			if (lastData !=null){
-			
-			float[] data = ToFloatArray(lastData);
-			soundManagerClass.receiveFloats(data, id);
-			return null;
+			if (lastData !=null)
+			{
+				put_data.Enqueue(lastData);
+				return null;
 			}
 		}
 		return null;
 	}
+
 	// Update is called once per frame
 	void Update () {
-
-		byte[] lel = new byte[] {0,1,0,1,0};
-
+	
 		if(connected)
 		{   
-			//print(bytesToSend().Length);
-			//networkClass.Write(bytesToSend());
+			if(testBool==true)
+			{
+			StartCoroutine ("get");
+			send ();
+		    }
 		}
 
-		StartCoroutine ("get");
-		//print (networkClass.recived_data.Count );
+	}
 
 }
 
 
-}
+		
+
+
+
+
