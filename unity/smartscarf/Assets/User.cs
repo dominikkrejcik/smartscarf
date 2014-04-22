@@ -17,17 +17,25 @@ public class User : MonoBehaviour {
 	private AudioSource playBackAudio;
 	private NetworkBehaviour networkClass;
 	private SoundManager soundManagerClass;
-	private int length=16001;
+	int sada;
+	int x=0;
+	private int length=8001;
 	private int difference = 1;
-	private byte[] newData = new byte [16000];
+	private byte[] newData = new byte [8000];
 	private byte[] backup ;//= new byte [8000];
 	private int id;
 	bool testBool = false;
 	bool backUpData=false;
 	private Boolean check=false;
+	private Boolean logIn=false;
 	private Boolean complete=false;
 	private Queue<byte[]> put_data = new Queue<byte[]>();
 	private Queue<byte[]> send_data = new Queue<byte[]>();
+	string inputString="";
+	string saveString="";
+   public  string Identity="";
+	bool start=false;
+	public int index=0;
 
 	// Use thisous for initialization
 	void Start () {
@@ -37,8 +45,8 @@ public class User : MonoBehaviour {
 		soundManagerClass = GetComponent<SoundManager>();
 
 		micActivate();
-		InvokeRepeating("bytesToSend", 0f, 1.1f);
-		InvokeRepeating ("testFunc", 0f, 1.1f);
+		InvokeRepeating("bytesToSend", 0f, 1f);
+	    InvokeRepeating ("testFunc", 0f,    1f);
 	}
 	
 	public byte[] ToByteArray(float[] floatArray) {
@@ -74,11 +82,53 @@ public class User : MonoBehaviour {
 	}
 	
 	void OnGUI() {
+		if(logIn==false)
+		{
+		inputString= GUI.TextField(new Rect(10, 10, 200, 20), inputString, 200);
+		
+		if (GUI.Button(new Rect(50, 40, 200, 30), "Login"))
+		{   
+
+				if(inputString.Equals("Nej"))
+				 {
+			
+				Identity="0";
+		
+			    logIn=true;
+				}
+				else if(inputString.Equals("Dom"))
+				{
+					Identity="1";
+				
+					logIn=true;
+				
+				}
+
+				else if(inputString.Equals("Ed"))
+				{
+					Identity="2";
+			
+					logIn=true;
+					
+				}
+		}
+
+			
+		}
+		else if(logIn==true)
+		{
+			joinRoom();
+		}
+	}
+
+	void joinRoom()
+	{
 		if (!connected)
 		{
+			//print ("HI");
 			if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Enter room"))
 			{
-				Debug.Log("User wants to join");
+//				Debug.Log("User wants to join");
 				connect();
 			}
 		}
@@ -86,7 +136,7 @@ public class User : MonoBehaviour {
 		{
 			if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Leave room"))
 			{
-				Debug.Log("User wants to leave");
+			//	Debug.Log("User wants to leave");
 				disconnect();
 			}
 		}
@@ -107,8 +157,10 @@ public class User : MonoBehaviour {
 		int i=0;
 		float[] audioData = new float[audio.clip.samples * audio.clip.channels];
 		audio.clip.GetData(audioData, 0);
-		byte[] audioarray = ToByteArray (audioData);
-	    send_data.Enqueue(audioarray);
+
+		byte[] audioarray = ToByteArray (audioData);		print (audioarray.Length);
+
+		send_data.Enqueue(audioarray);
 		
 	}
 	
@@ -141,47 +193,55 @@ public class User : MonoBehaviour {
 		//testBool = false;
 	}
 
-	void testFunc()
-	{
-	      if (put_data.Count > 0) 
+  void  testFunc()
+	{   
+	      if (put_data.Count > 0&&index>2) 
 		{
+			print (put_data.Count);
+		
 			byte[] send = put_data.Dequeue();
 			float[] testArr = ToFloatArray (send);
 			soundManagerClass.receiveFloats (testArr, 0);
 		    testBool = false;
-				
+		
 		}
+
 	}
 
 	void send()
-	{      
+	{    
 		if (send_data.Count > 0)
 		{
-		 networkClass.Write(send_data.Dequeue());
+
+
+			networkClass.Write(send_data.Dequeue(),Identity);
 		}
 	}
 
 	private void  checkData(byte[] data, int message_length)
-	{   
+	{   //  print ("in");
 
 		if("0".Equals(Encoding.ASCII.GetString((data), 0, 1)) && difference==1)
 		{   
 			id=0;
-	        verifyData (data,newData,message_length-1,1);
+		
+			verifyData (data,newData,message_length-1,1);
 		}
 		if("1".Equals(Encoding.ASCII.GetString((data), 0, 1)) && difference==1)
 		{   
 			id=1;
+
 			verifyData (data,newData,message_length-1,1);
 		}
 		
 		else if(difference>1&&complete==false)
 		{  
+
 			verifyData (data,newData,message_length,0);
 		}
 		else if(difference==1 && "N".Equals(Encoding.ASCII.GetString((data), 0, 1)) )
 		{
-		
+		//	print ("no one there fuck off");
 			
 		}
 		
@@ -194,9 +254,7 @@ public class User : MonoBehaviour {
 		check=false;
 		if((length-1) == message_length)
 		{  
-			
 
-			
 			Buffer.BlockCopy(data, offset, newData, 0, message_length-1);
 			difference=newData.Length+difference;
 			check=true;
@@ -206,17 +264,20 @@ public class User : MonoBehaviour {
 		else if(length-1 >= message_length)
 		{   
 
-			if(difference+message_length<=16001)
+			if(difference+message_length<=8001)
 			{
 			Buffer.BlockCopy(data, offset, newData, difference-1, message_length);
 			difference=message_length+difference;
+	
 			check=false;
 			complete=true;
 			}
-			else if(difference+message_length>16001)
+			else if(difference+message_length>8001)
 			{   
-				int delta=(16001-difference);
+			
+				int delta=(8001-difference);
 				int copy= data.Length-delta;
+	
 				backup =new byte[copy];
 				Buffer.BlockCopy(data,offset,newData,difference-1,delta);
 				Buffer.BlockCopy(data,delta,backup,0,copy);
@@ -227,13 +288,16 @@ public class User : MonoBehaviour {
 				complete=true;
 			}
 		}
+		
+		
+		
 	}
 	
 	
 	private byte[] getData(int message_length)
-	{    
+	{     
 		if(difference==message_length)
-		{   
+		{  
 			byte[] finalData= new byte[newData.Length];
 			difference=1;
 			Buffer.BlockCopy(newData, 0,finalData, 0, newData.Length);
@@ -241,10 +305,11 @@ public class User : MonoBehaviour {
 	
 
 			string dat = Encoding.ASCII.GetString((finalData), 0, newData.Length);
-		
+
 
 		    if(backUpData==true)
 			{  
+			
 				checkData(backup,backup.Length);
 				backUpData=false;
 			}
@@ -269,37 +334,43 @@ public class User : MonoBehaviour {
 		if(recived_data.Count>0&&check==false)
 		{
 			byte[] byteData =recived_data.Dequeue ();
+		
 			checkData(byteData,byteData.Length);
+
 			complete=false;
 			byte [] lastData= getData (length);
-			if (lastData !=null)
-			{
+			if (lastData !=null){
+
 				put_data.Enqueue(lastData);
-				return null;
+		
+				index++;
+		
+      			print (")");
+
+			
+			return null;
 			}
 		}
 		return null;
 	}
-
 	// Update is called once per frame
 	void Update () {
-	
+
+		byte[] lel = new byte[] {0,1,0,1,0};
+
 		if(connected)
 		{   
-			if(testBool==true)
-			{
+
 			StartCoroutine ("get");
 			send ();
-		    }
+
+		
 		}
 
-	}
+
+		//print (networkClass.recived_data.Count );
 
 }
 
 
-		
-
-
-
-
+}

@@ -13,17 +13,18 @@ public class NetworkBehaviour : MonoBehaviour {
 	private int port =8214;
 	private TcpClient client;
 	private int retry;
-
+	private User userClass;
 	private int index;
 	private int count;
-	private int length=16001;
+	private int length=8001;
 	private int difference = 1;
 	Boolean isWriting = false;
-	private byte[] newData = new byte [16000];
+	private byte[] newData = new byte [8000];
 	private Queue<byte[]> recived_data = new Queue<byte[]>();
-	
+
 	void Start()
 	{     
+
 		Connect();
 		
 	}
@@ -36,9 +37,9 @@ public class NetworkBehaviour : MonoBehaviour {
 		client.BeginConnect (IpAddress, port, ConnectCallBack, null);
 	}
 	
-	public void OnApplicationQuit()
+	private void OnApplicationQuit()
 	{
-		print ("close");
+//		print ("close");
 		client.Close ();
 	}
 	
@@ -106,13 +107,15 @@ public class NetworkBehaviour : MonoBehaviour {
 			
 		}
 	}
-	
+
 
 	
-	public void Write(byte[] bytes)
+	public void Write(byte[] bytes, string iden)
 	{   
 		System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
-	    byte[] id = encoding.GetBytes ("1");
+	//	String iden = userClass.Identity;
+//		print (iden);
+	    byte[] id = encoding.GetBytes (iden);
 		byte[] buffer = new byte[ id.Length + bytes.Length];
 		System.Buffer.BlockCopy( id, 0, buffer, 0, id.Length );
 		System.Buffer.BlockCopy( bytes, 0, buffer, id.Length, bytes.Length );
