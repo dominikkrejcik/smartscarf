@@ -50,7 +50,6 @@ public class User : MonoBehaviour {
 		micActivate();
 		
 		audioData  = new float[audio.clip.samples * audio.clip.channels];
-		print (audioData.Length);
 		networkClass.setLength(audioData.Length+1);
 
 		InvokeRepeating("bytesToSend", 0f, 1f);
@@ -164,8 +163,6 @@ public class User : MonoBehaviour {
 	void bytesToSend()
 	{   
 		audio.clip.GetData(audioData, 0);
-
-		print ((ToByteArray(audioData)).Length);
 
 		send_data.Enqueue(ToByteArray(audioData));
 		
