@@ -48,13 +48,9 @@ public class User : MonoBehaviour {
 		soundManagerClass = GetComponent<SoundManager>();
 
 		micActivate();
-<<<<<<< HEAD
-		InvokeRepeating("bytesToSend", 0f, 1f);
-	    InvokeRepeating ("testFunc", 0f,    1f);
-=======
+
 		InvokeRepeating("bytesToSend", 0f, 0.9f);
-	    InvokeRepeating ("testFunc", 0f,    0.7f);
->>>>>>> afcfd428de4c272b3673f283a92b75b2578fbc43
+		InvokeRepeating ("testFunc", 0f,    0.7f);
 
 		audioData  = new float[audio.clip.samples * audio.clip.channels];
 	}
