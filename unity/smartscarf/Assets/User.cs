@@ -162,6 +162,8 @@ public class User : MonoBehaviour {
 	{   
 		audio.clip.GetData(audioData, 0);
 
+		print ((ToByteArray(audioData)).Length);
+
 		send_data.Enqueue(ToByteArray(audioData));
 		
 	}
