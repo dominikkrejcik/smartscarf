@@ -270,6 +270,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: {fileID: 0}
+  Identity: 
+  index: 0
 --- !u!33 &1853203036
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -357,7 +359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a414a1e90dc7048b204851d74ec3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strMessage: 
 --- !u!114 &1853203040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,4 +371,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundSource: {fileID: 100000, guid: 96cd8e8394a8bd3499d4ed9338bb2fe7, type: 2}
-  clip: {fileID: 0}
