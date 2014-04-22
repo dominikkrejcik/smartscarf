@@ -16,10 +16,10 @@ public class NetworkBehaviour : MonoBehaviour {
 	private User userClass;
 	private int index;
 	private int count;
-	private int length=8001;
+	private int length=16001;
 	private int difference = 1;
 	Boolean isWriting = false;
-	private byte[] newData = new byte [8000];
+	private byte[] newData = new byte [16000];
 	private Queue<byte[]> recived_data = new Queue<byte[]>();
 
 	void Start()
@@ -120,7 +120,7 @@ public class NetworkBehaviour : MonoBehaviour {
 		System.Buffer.BlockCopy( id, 0, buffer, 0, id.Length );
 		System.Buffer.BlockCopy( bytes, 0, buffer, id.Length, bytes.Length );
 		NetworkStream networkStream = client.GetStream();
-
+		 
 		if(false == isWriting)
 		{
 			networkStream.BeginWrite(buffer, 0, buffer.Length, WriteCallback, null);
