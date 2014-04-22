@@ -37,9 +37,14 @@ public class User : MonoBehaviour {
 	bool start=false;
 	public int index=0;
 
+	
+	float[] audioData;
+
 	// Use thisous for initialization
 	void Start () {
-		
+
+		audioData  = new float[audio.clip.samples * audio.clip.channels];
+	
 		userAudioListener = GetComponent<AudioListener>();
 		networkClass = GetComponent<NetworkBehaviour>();
 		soundManagerClass = GetComponent<SoundManager>();
@@ -151,16 +156,12 @@ public class User : MonoBehaviour {
 		while (!(Microphone.GetPosition(selectedDevice) > 0)){} // Wait until the recording has started
 		//audio.Play(); // Play the audio source!
 	}
-	
+
 	void bytesToSend()
 	{   
-		int i=0;
-		float[] audioData = new float[audio.clip.samples * audio.clip.channels];
 		audio.clip.GetData(audioData, 0);
 
-		byte[] audioarray = ToByteArray (audioData);		print (audioarray.Length);
-
-		send_data.Enqueue(audioarray);
+		send_data.Enqueue(ToByteArray(audioData));
 		
 	}
 	
