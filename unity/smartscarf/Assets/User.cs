@@ -49,7 +49,7 @@ public class User : MonoBehaviour {
 
 		micActivate();
 		InvokeRepeating("bytesToSend", 0f, 1f);
-	    InvokeRepeating ("testFunc", 0f,    0.7f);
+	    InvokeRepeating ("testFunc", 0f,    1f);
 
 		audioData  = new float[audio.clip.samples * audio.clip.channels];
 	}
