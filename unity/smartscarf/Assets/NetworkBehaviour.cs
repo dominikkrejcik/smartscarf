@@ -16,7 +16,7 @@ public class NetworkBehaviour : MonoBehaviour {
 	private User userClass;
 	private int index;
 	private int count;
-	private int length=16001;
+	private int length;
 	private int difference = 1;
 	Boolean isWriting = false;
 	private byte[] newData = new byte [16000];
@@ -29,7 +29,10 @@ public class NetworkBehaviour : MonoBehaviour {
 		
 	}
 	
-
+	public void setLength(int length1)
+	{
+		length = length1;
+	}
 	
 	private void Connect()
 	{

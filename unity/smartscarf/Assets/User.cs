@@ -48,15 +48,14 @@ public class User : MonoBehaviour {
 		soundManagerClass = GetComponent<SoundManager>();
 
 		micActivate();
+		
+		audioData  = new float[audio.clip.samples * audio.clip.channels];
+
+		networkClass.setLength(audioData.Length+1);
 
 		InvokeRepeating("bytesToSend", 0f, 1f);
 	    InvokeRepeating ("testFunc", 0f,    1f);
 
-
-	
-
-		audioData  = new float[audio.clip.samples * audio.clip.channels];
-		print (audioData.Length);
 	}
 	
 	public byte[] ToByteArray(float[] floatArray) {
