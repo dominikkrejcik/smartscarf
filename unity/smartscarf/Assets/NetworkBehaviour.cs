@@ -16,10 +16,10 @@ public class NetworkBehaviour : MonoBehaviour {
 	private User userClass;
 	private int index;
 	private int count;
-	private int length=16001;
+	private int length=32001;
 	private int difference = 1;
 	Boolean isWriting = false;
-	private byte[] newData = new byte [16000];
+	private byte[] newData = new byte [32000];
 	private Queue<byte[]> recived_data = new Queue<byte[]>();
 
 	void Start()

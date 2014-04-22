@@ -57,7 +57,7 @@ public class SoundManager : MonoBehaviour {
 	public void receiveFloats(float[] dataFloats, int ID)
 	{
 
-		AudioClip soundClip = AudioClip.Create("clip", dataFloats.Length, 1, 4000, true, false);
+		AudioClip soundClip = AudioClip.Create("clip", dataFloats.Length, 1, 8000, true, false);
 
 		soundClip.SetData(dataFloats, 0);
 
@@ -83,4 +83,4 @@ public class SoundManager : MonoBehaviour {
 	}
 
 
-}
+}8
