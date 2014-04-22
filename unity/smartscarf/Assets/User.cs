@@ -19,9 +19,9 @@ public class User : MonoBehaviour {
 	private SoundManager soundManagerClass;
 	int sada;
 	int x=0;
-	private int length=8001;
+	private int length=16001;
 	private int difference = 1;
-	private byte[] newData = new byte [8000];
+	private byte[] newData = new byte [16000];
 	private byte[] backup ;//= new byte [8000];
 	private int id;
 	bool testBool = false;
@@ -49,10 +49,14 @@ public class User : MonoBehaviour {
 
 		micActivate();
 
-		InvokeRepeating("bytesToSend", 0f, 0.9f);
-		InvokeRepeating ("testFunc", 0f,    0.7f);
+		InvokeRepeating("bytesToSend", 0f, 1f);
+	    InvokeRepeating ("testFunc", 0f,    1f);
+
+
+	
 
 		audioData  = new float[audio.clip.samples * audio.clip.channels];
+		print (audioData.Length);
 	}
 	
 	public byte[] ToByteArray(float[] floatArray) {
@@ -268,7 +272,7 @@ public class User : MonoBehaviour {
 		else if(length-1 >= message_length)
 		{   
 
-			if(difference+message_length<=8001)
+			if(difference+message_length<=16001)
 			{
 			Buffer.BlockCopy(data, offset, newData, difference-1, message_length);
 			difference=message_length+difference;
@@ -276,10 +280,10 @@ public class User : MonoBehaviour {
 			check=false;
 			complete=true;
 			}
-			else if(difference+message_length>8001)
+			else if(difference+message_length>16001)
 			{   
 			
-				int delta=(8001-difference);
+				int delta=(16001-difference);
 				int copy= data.Length-delta;
 	
 				backup =new byte[copy];
