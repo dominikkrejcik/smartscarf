@@ -19,7 +19,7 @@ public class NetworkBehaviour : MonoBehaviour {
 	private int length;
 	private int difference = 1;
 	Boolean isWriting = false;
-	private byte[] newData = new byte [16000];
+	private byte[] newData = new byte [32000];
 	private Queue<byte[]> recived_data = new Queue<byte[]>();
 
 	void Start()
