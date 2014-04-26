@@ -92,9 +92,9 @@ public class User : MonoBehaviour {
 	void OnGUI() {
 		if(logIn==false)
 		{
-		inputString= GUI.TextField(new Rect(10, 10, 200, 20), inputString, 200);
+			inputString= GUI.TextField(new Rect(10, Screen.height/2, Screen.width-20, 20), inputString, 200);
 		
-		if (GUI.Button(new Rect(50, 40, 200, 30), "Login"))
+		if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Login"))
 		{   
 
 				if(inputString.Equals("Nej"))
