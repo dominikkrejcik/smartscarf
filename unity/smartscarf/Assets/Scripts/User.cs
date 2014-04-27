@@ -11,6 +11,7 @@ using System.Collections.Generic;
 public class User : MonoBehaviour {
 
 	public AudioClip sound;
+	public GUISkin Login,Enter,Exit;
 	
 	private bool connected = false;
 	private AudioListener userAudioListener;
@@ -90,11 +91,13 @@ public class User : MonoBehaviour {
 	}
 	
 	void OnGUI() {
+
 		if(logIn==false)
 		{
-			inputString= GUI.TextField(new Rect(10, Screen.height/2, Screen.width-20, 20), inputString, 200);
-		
-		if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Login"))
+			GUI.skin = Login;
+			inputString= GUI.TextField(new Rect(30, Screen.height/3, Screen.width-60, 45), inputString, 200);
+
+		if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
 		{   
 
 				if(inputString.Equals("Nej"))
@@ -133,8 +136,8 @@ public class User : MonoBehaviour {
 	{
 		if (!connected)
 		{
-			//print ("HI");
-			if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Enter room"))
+			GUI.skin = Enter;
+			if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
 			{
 //				Debug.Log("User wants to join");
 				connect();
@@ -142,7 +145,8 @@ public class User : MonoBehaviour {
 		}
 		else
 		{
-			if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Leave room"))
+			GUI.skin = Exit;
+			if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
 			{
 			//	Debug.Log("User wants to leave");
 				disconnect();
