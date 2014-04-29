@@ -228,8 +228,8 @@ MonoBehaviour:
   talkIndicator: {fileID: 100000}
   profiles:
   - {fileID: 2800000, guid: f448fd7027aa2ef4b8b30710c6478a59, type: 3}
-  - {fileID: 2800000, guid: 55aaed2a5152a2946b801ced799aed9b, type: 3}
   - {fileID: 2800000, guid: 8992e830fd52dd04d8f8e6675df14089, type: 3}
+  - {fileID: 2800000, guid: 55aaed2a5152a2946b801ced799aed9b, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 public class User : MonoBehaviour {
 
 	public AudioClip sound;
+	public Texture2D[] profiles;
 	public GUISkin Login, Enter, Exit;
 	
 	private bool connected = false;
@@ -96,53 +97,60 @@ public class User : MonoBehaviour {
 	}
 	
 	void OnGUI() {
-		
+
+		float width = (Screen.width*(26f/32f));
+		float height = (Screen.height/6)*5;
+
+		Rect rect = new Rect(Screen.width/2-(width/2), height, width, Screen.height/10);
+
 		if(logIn==false)
 		{
 			GUI.skin = Login;
-			inputString= GUI.TextField(new Rect(30, Screen.height/3, Screen.width-60, 45), inputString, 200);
-			
-			if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
-			{   
-				
-				if(inputString.Equals("Nej"))
-				{
-					
-					Identity="0";
-					
-					logIn=true;
-				}
-				else if(inputString.Equals("Dom"))
-				{
-					Identity="1";
-					
-					logIn=true;
-					
-				}
-				
-				else if(inputString.Equals("Ed"))
-				{
-					Identity="2";
-					
-					logIn=true;
-					
-				}
+			inputString = GUI.TextField(new Rect(Screen.width/2-(width/2), Screen.height/3, width, Screen.height/10), inputString, 200);
+
+			if (Event.current.Equals(Event.KeyboardEvent("None"))&& inputString != "")
+			{
+				doneTyping(inputString);
 			}
-			
+
+			if (GUI.Button(rect,"") && inputString != "")
+			{   
+				doneTyping(inputString);
+			}
 			
 		}
 		else if(logIn==true)
 		{
-			joinRoom();
+			joinRoom(rect);
 		}
 	}
+
+	void doneTyping(string input)
+	{
+		if(inputString.Equals("Nej"))
+		{
+			Identity="0";
+		}
+		else if(inputString.Equals("Dom"))
+		{
+			Identity="1";
+		}
+		
+		else if(inputString.Equals("Ed"))
+		{
+			Identity="2";
+		}
+
+		renderer.material.mainTexture = profiles[int.Parse(Identity)];
+		logIn = true;
+	}
 	
-	void joinRoom()
+	void joinRoom(Rect rect)
 	{
 		if (!connected)
 		{
 			GUI.skin = Enter;
-			if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
+			if (GUI.Button(rect,""))
 			{
 				//			Debug.Log("User wants to join");
 				networkClass.Connect();
@@ -153,7 +161,7 @@ public class User : MonoBehaviour {
 		else
 		{
 			GUI.skin = Exit;
-			if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
+			if (GUI.Button(rect,""))
 			{
 				//	Debug.Log("User wants to leave");
 				networkClass.Quit();

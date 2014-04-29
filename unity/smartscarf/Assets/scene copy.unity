@@ -258,9 +258,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1393139441}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc0c91bfde4cc3a47b6ef83bd7c4d483, type: 3}
+  m_Script: {fileID: 11500000, guid: ddeea4d123c634efc9209a471bc6221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BGs:
+  - {fileID: 2800000, guid: 14c78ee78e1823542b91242897a19018, type: 3}
+  - {fileID: 2800000, guid: 4ca157babbb4a3d49a0e465374f097cf, type: 3}
+  BG1: {fileID: 1897378266}
+  BG2: {fileID: 1536965387}
+  switchTime: 30
 --- !u!1 &1536965387
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +294,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1536965387}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abfe5d6814bf4fd47b52acba7ef577ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 590cc21741a214cb992e399736482502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!23 &1536965389
@@ -404,6 +410,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sound: {fileID: 0}
+  profiles:
+  - {fileID: 2800000, guid: f448fd7027aa2ef4b8b30710c6478a59, type: 3}
+  - {fileID: 2800000, guid: 8992e830fd52dd04d8f8e6675df14089, type: 3}
+  - {fileID: 2800000, guid: 55aaed2a5152a2946b801ced799aed9b, type: 3}
   Login: {fileID: 11400000, guid: a5b1b32d5ef14c34ab0ee8810b026c97, type: 2}
   Enter: {fileID: 11400000, guid: ca029d26c86636241a095070c916951e, type: 2}
   Exit: {fileID: 11400000, guid: 0c4ad0b0f0002204fa42a85f41ee4898, type: 2}
@@ -535,7 +545,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1897378266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abfe5d6814bf4fd47b52acba7ef577ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 590cc21741a214cb992e399736482502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!23 &1897378268
