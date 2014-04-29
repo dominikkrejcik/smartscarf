@@ -465,7 +465,7 @@ public class User : MonoBehaviour {
 		if(connected)
 		{   
 
-			StartCoroutine ("get");
+			//StartCoroutine ("get");
 			send ();
 
 		
