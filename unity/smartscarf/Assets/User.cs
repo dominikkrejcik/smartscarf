@@ -55,7 +55,7 @@ public class User : MonoBehaviour {
 		micActivate();
 
 		InvokeRepeating("bytesToSend", 0f, 1f);
-	    InvokeRepeating ("testFunc", 0f,    0.2f);
+	    InvokeRepeating ("testFunc", 0f,    0.9f);
 
 
 	
@@ -465,7 +465,7 @@ public class User : MonoBehaviour {
 		if(connected)
 		{   
 
-			StartCoroutine ("get");
+			//StartCoroutine ("get");
 			send ();
 
 		
