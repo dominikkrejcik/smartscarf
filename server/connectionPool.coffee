@@ -17,8 +17,8 @@ class ConnectionPool
     @_connections.length
 
   _pipeConnections: (connA, connB) ->
-    connA.read()
-    connB.read()
+    # Empty the buffer before piping
+    while connB.read() then
     connA.pipe(connB)
     connB.pipe(connA)
 
