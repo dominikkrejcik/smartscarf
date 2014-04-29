@@ -25,19 +25,19 @@ public class NetworkBehaviour : MonoBehaviour {
 	void Start()
 	{     
 
-		Connect();
+		//Connect();
 		
 	}
 	
 
 	
-	private void Connect()
+	public void Connect()
 	{
 		client = new TcpClient ();
 		client.BeginConnect (IpAddress, port, ConnectCallBack, null);
 	}
 	
-	private void OnApplicationQuit()
+	public void Quit()
 	{
 //		print ("close");
 		client.Close ();

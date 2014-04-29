@@ -29,13 +29,16 @@ public class User : MonoBehaviour {
 	private Boolean check=false;
 	private Boolean logIn=false;
 	private Boolean complete=false;
-	private Queue<byte[]> put_data = new Queue<byte[]>();
+	private Queue<byte[]> put0data = new Queue<byte[]>();
+	private Queue<byte[]> put1data = new Queue<byte[]>();
+	private Queue<byte[]> put2data = new Queue<byte[]>();
 	private Queue<byte[]> send_data = new Queue<byte[]>();
 	string inputString="";
 	string saveString="";
    public  string Identity="";
 	bool start=false;
 	public int index=0;
+	private Boolean room =false;
 
 	
 	float[] audioData;
@@ -50,7 +53,7 @@ public class User : MonoBehaviour {
 		micActivate();
 
 		InvokeRepeating("bytesToSend", 0f, 1f);
-	    InvokeRepeating ("testFunc", 0f,    1f);
+	    InvokeRepeating ("testFunc", 0f,    0.2f);
 
 
 	
@@ -140,6 +143,8 @@ public class User : MonoBehaviour {
 			{
 //				Debug.Log("User wants to join");
 				connect();
+				networkClass.Connect();
+				room=true;
 			}
 		}
 		else
@@ -163,13 +168,14 @@ public class User : MonoBehaviour {
 	}
 
 	void bytesToSend()
-	{   
+	{   if (room)
+		{
 		audio.clip.GetData(audioData, 0);
 
-		print ((ToByteArray(audioData)).Length);
+//		print ((ToByteArray(audioData)).Length);
 
 		send_data.Enqueue(ToByteArray(audioData));
-		
+		}
 	}
 	
 	void connect()
@@ -202,22 +208,82 @@ public class User : MonoBehaviour {
 	}
 
   void  testFunc()
-	{   
-	      if (put_data.Count > 0) 
+	{    
+	      if (put0data.Count > 0&&put1data.Count>0) 
 		{
-			print (put_data.Count);
-		
-			byte[] send = put_data.Dequeue();
-			float[] testArr = ToFloatArray (send);
-			soundManagerClass.receiveFloats (testArr, 0);
+			//print (put0data.Count);
+			print ("01");
+			byte[] send0 = put0data.Dequeue();
+			float[] testArr0 = ToFloatArray (send0);
+			soundManagerClass.receiveFloats (testArr0, 0);
+			byte[] send1 = put1data.Dequeue();
+			float[] testArr1 = ToFloatArray (send1);
+			soundManagerClass.receiveFloats (testArr1, 1);
 		    testBool = false;
 		
 		}
 
+		else if (put2data.Count > 0&&put1data.Count>0) 
+		{
+
+			print ("21");
+			byte[] send1 = put1data.Dequeue();
+			float[] testArr1 = ToFloatArray (send1);
+			soundManagerClass.receiveFloats (testArr1, 1);
+			byte[] send2 = put2data.Dequeue();
+			float[] testArr2 = ToFloatArray (send2);
+			soundManagerClass.receiveFloats (testArr2, 2);
+			testBool = false;
+		}
+
+		else if (put0data.Count > 0&&put2data.Count>0) 
+		{
+
+			print ("02");
+			byte[] send0 = put0data.Dequeue();
+			float[] testArr0 = ToFloatArray (send0);
+			soundManagerClass.receiveFloats (testArr0, 0);
+			byte[] send2 = put2data.Dequeue();
+			float[] testArr2 = ToFloatArray (send2);
+			soundManagerClass.receiveFloats (testArr2, 2);
+			testBool = false;
+		}
+
+		else if (put0data.Count > 0) 
+		{
+			print ("0");
+			byte[] send0 = put0data.Dequeue();
+			float[] testArr0 = ToFloatArray (send0);
+			soundManagerClass.receiveFloats (testArr0, 0);
+		
+			testBool = false;
+		}
+
+		else if (put1data.Count > 0) 
+		{
+			print ("1");
+			byte[] send1 = put1data.Dequeue();
+			float[] testArr1 = ToFloatArray (send1);
+			soundManagerClass.receiveFloats (testArr1, 1);
+			
+			testBool = false;
+		}
+		else if (put2data.Count > 0) 
+		{
+			print ("2");
+			byte[] send2 = put2data.Dequeue();
+			float[] testArr2 = ToFloatArray (send2);
+			soundManagerClass.receiveFloats (testArr2, 2);
+			
+			testBool = false;
+		}
+			
+
+
 	}
 
 	void send()
-	{    
+	{     
 		if (send_data.Count > 0)
 		{
 
@@ -241,6 +307,14 @@ public class User : MonoBehaviour {
 
 			verifyData (data,newData,message_length-1,1);
 		}
+
+		if("2".Equals(Encoding.ASCII.GetString((data), 0, 1)) && difference==1)
+		{   
+			id=2;
+			
+			verifyData (data,newData,message_length-1,1);
+		}
+
 		
 		else if(difference>1&&complete==false)
 		{  
@@ -332,26 +406,37 @@ public class User : MonoBehaviour {
 	IEnumerator get() {
 		if(check==false)
 		{
-
+			
 		}
 		Queue<byte[]> recived_data = networkClass.getQueue();
 		
 		if(recived_data.Count>0&&check==false)
 		{
 			byte[] byteData =recived_data.Dequeue ();
-		
+			
 			checkData(byteData,byteData.Length);
-
+			
 			complete=false;
 			byte [] lastData= getData (length);
 			if (lastData !=null){
+				
+				if(id==0)
+				{
+					put0data.Enqueue(lastData);
+				}
+				else if(id==1)
+				{
+					put1data.Enqueue(lastData);
+				}
+				else if(id==2)
+				{
+					put2data.Enqueue(lastData);
+				}
 
-				put_data.Enqueue(lastData);
-		
-
-
-			
-			return null;
+				
+				
+				
+				return null;
 			}
 		}
 		return null;
