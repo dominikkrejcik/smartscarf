@@ -11,6 +11,7 @@ using System.Collections.Generic;
 public class User : MonoBehaviour {
 
 	public AudioClip sound;
+	public GUISkin Login, Enter, Exit;
 	
 	private bool connected = false;
 	private AudioListener userAudioListener;
@@ -35,7 +36,7 @@ public class User : MonoBehaviour {
 	private Queue<byte[]> send_data = new Queue<byte[]>();
 	string inputString="";
 	string saveString="";
-   public  string Identity="";
+	public  string Identity="";
 	bool start=false;
 	public int index=0;
 	private Boolean room =false;
@@ -95,37 +96,39 @@ public class User : MonoBehaviour {
 	}
 	
 	void OnGUI() {
+		
 		if(logIn==false)
 		{
-		inputString= GUI.TextField(new Rect(10, 10, 200, 20), inputString, 200);
-		
-		if (GUI.Button(new Rect(50, 40, 200, 30), "Login"))
-		{   
-
-				if(inputString.Equals("Nej"))
-				 {
+			GUI.skin = Login;
+			inputString= GUI.TextField(new Rect(30, Screen.height/3, Screen.width-60, 45), inputString, 200);
 			
-				Identity="0";
-		
-			    logIn=true;
+			if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
+			{   
+				
+				if(inputString.Equals("Nej"))
+				{
+					
+					Identity="0";
+					
+					logIn=true;
 				}
 				else if(inputString.Equals("Dom"))
 				{
 					Identity="1";
-				
-					logIn=true;
-				
-				}
-
-				else if(inputString.Equals("Ed"))
-				{
-					Identity="2";
-			
+					
 					logIn=true;
 					
 				}
-		}
-
+				
+				else if(inputString.Equals("Ed"))
+				{
+					Identity="2";
+					
+					logIn=true;
+					
+				}
+			}
+			
 			
 		}
 		else if(logIn==true)
@@ -133,29 +136,34 @@ public class User : MonoBehaviour {
 			joinRoom();
 		}
 	}
-
+	
 	void joinRoom()
 	{
 		if (!connected)
 		{
-			//print ("HI");
-			if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Enter room"))
+			GUI.skin = Enter;
+			if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
 			{
-//				Debug.Log("User wants to join");
-				connect();
+				//			Debug.Log("User wants to join");
 				networkClass.Connect();
+				connect();
 				room=true;
 			}
 		}
 		else
 		{
-			if (GUI.Button(new Rect(10, Screen.height-50, Screen.width-20, 30), "Leave room"))
+			GUI.skin = Exit;
+			if (GUI.Button(new Rect(30, Screen.height-80, Screen.width-60, 45),""))
 			{
-			//	Debug.Log("User wants to leave");
+				//	Debug.Log("User wants to leave");
+				networkClass.Quit();
 				disconnect();
+				room=false;
 			}
 		}
 	}
+	
+
 	
 	void micActivate()
 	{
