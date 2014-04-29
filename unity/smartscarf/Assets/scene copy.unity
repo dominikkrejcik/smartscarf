@@ -261,12 +261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc0c91bfde4cc3a47b6ef83bd7c4d483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGs:
-  - {fileID: 2800000, guid: 4ca157babbb4a3d49a0e465374f097cf, type: 3}
-  - {fileID: 2800000, guid: 14c78ee78e1823542b91242897a19018, type: 3}
-  BG1: {fileID: 1897378266}
-  BG2: {fileID: 1536965387}
-  switchTime: 30
 --- !u!1 &1536965387
 GameObject:
   m_ObjectHideFlags: 0

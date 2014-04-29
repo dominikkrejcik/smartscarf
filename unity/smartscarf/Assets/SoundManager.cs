@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour {
-	
+
 	public GameObject soundSource;
 
 	private List<GameObject> audioSourceList = new List<GameObject>();
@@ -26,13 +26,16 @@ public class SoundManager : MonoBehaviour {
 		Vector3 posistionVector = getNewPosistionVector();
 		GameObject source = Instantiate(soundSource, posistionVector, transform.rotation) as GameObject;
 		audioSourceList.Add(source);
+		
+		SoundSourceBehaviour sourceBehaviour = source.GetComponent<SoundSourceBehaviour>();
+		sourceBehaviour.setID(ID);
 
-		updateSoundSource(sound, ID);
+		updateSoundSource(sound, (audioSourceList.Count-1));
 	}
 
-	void updateSoundSource(AudioClip sound, int ID)
+	void updateSoundSource(AudioClip sound, int index)
 	{
-		AudioSource sourceComponent = audioSourceList[ID].GetComponent<AudioSource>();
+		AudioSource sourceComponent = audioSourceList[index].GetComponent<AudioSource>();
 		sourceComponent.audio.clip = sound;
 		sourceComponent.Play();
 	}
@@ -61,18 +64,20 @@ public class SoundManager : MonoBehaviour {
 
 		soundClip.SetData(dataFloats, 0);
 
-		if (ID >= audioSourceList.Count)
-		{
-			//add new source
-			addSoundSource(soundClip, ID);
-
+		for (int i=0; i<audioSourceList.Count; i++)
+		{			
+			SoundSourceBehaviour sourceBehaviour = audioSourceList[i].GetComponent<SoundSourceBehaviour>();
+			if (sourceBehaviour.getID() == ID)
+			{
+				//update current source
+				updateSoundSource(soundClip, i);
+				return;
+			}
 		}
-		else
-		{
-			//update current source
-			updateSoundSource(soundClip, ID);
 
-		}
+		//add new source if loop completes
+		addSoundSource(soundClip, ID);
+		return;
 	}
 
 	// Update is called once per frame
