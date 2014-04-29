@@ -24,7 +24,7 @@ public class SoundManager : MonoBehaviour {
 	void addSoundSource(AudioClip sound, int ID)
 	{
 		Vector3 posistionVector = getNewPosistionVector();
-		GameObject source = Instantiate(soundSource, posistionVector, transform.rotation) as GameObject;
+		GameObject source = Instantiate(soundSource, posistionVector, Quaternion.identity) as GameObject;
 		audioSourceList.Add(source);
 		
 		SoundSourceBehaviour sourceBehaviour = source.GetComponent<SoundSourceBehaviour>();
