@@ -122,9 +122,10 @@ public class NetworkBehaviour : MonoBehaviour {
 		NetworkStream networkStream = client.GetStream();
 		 
 		if(false == isWriting)
-		{
-			networkStream.BeginWrite(buffer, 0, buffer.Length, WriteCallback, null);
+		{   
 			isWriting = true;
+			networkStream.BeginWrite(buffer, 0, buffer.Length, WriteCallback, null);
+
 		}
 		
 	}

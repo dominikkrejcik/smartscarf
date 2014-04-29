@@ -45,9 +45,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: 8.42936885e-08, y: 1.0716137e-07, z: 1.90251068e-08, w: 1}
-  m_LocalPosition: {x: -0, y: -1.49625087, z: -0}
-  m_LocalScale: {x: 1.93085146, y: 1.93085146, z: 1.93085146}
+  m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106829}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: .179800898, y: .179800898, z: .179800898}
   m_Children: []
   m_Father: {fileID: 400002}
 --- !u!4 &400002
@@ -56,9 +56,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: -3.09086232e-08, y: .707106829, z: -.707106829, w: -3.09086232e-08}
-  m_LocalPosition: {x: 3.14231372, y: 3.73634982, z: 1.70697774e-07}
-  m_LocalScale: {x: .272774458, y: .272774458, z: .272774458}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.43786478, y: 2.42427921, z: 165.839844}
+  m_LocalScale: {x: 3.04385114, y: 3.04385114, z: 3.04385114}
   m_Children:
   - {fileID: 400000}
   m_Father: {fileID: 0}
@@ -68,7 +68,7 @@ Renderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_LightmapIndex: 255
@@ -95,7 +95,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: a38ed38358369db4bba4a9aba7ca214e, type: 2}
+  - {fileID: 2100000, guid: e42e1228f73a43345959b1b265bbc5f8, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -117,7 +117,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!64 &6400000
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -130,7 +130,7 @@ MeshCollider:
   serializedVersion: 2
   m_SmoothSphereCollisions: 0
   m_Convex: 0
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!64 &6400002
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -228,8 +228,8 @@ MonoBehaviour:
   talkIndicator: {fileID: 100000}
   profiles:
   - {fileID: 2800000, guid: f448fd7027aa2ef4b8b30710c6478a59, type: 3}
-  - {fileID: 2800000, guid: 55aaed2a5152a2946b801ced799aed9b, type: 3}
   - {fileID: 2800000, guid: 8992e830fd52dd04d8f8e6675df14089, type: 3}
+  - {fileID: 2800000, guid: 55aaed2a5152a2946b801ced799aed9b, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
