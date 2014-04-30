@@ -1,0 +1,9 @@
+/* change the colour of the background of the whole page*/
+  .navbar{
+    background-color: #F39C12;
+  }
+
+  .li.active a:hover{
+    color:  #F39C12;
+
+  }
